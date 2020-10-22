@@ -1,3 +1,7 @@
+global:
+  db_password: &db_password ""
+  redis_auth: &redis_auth ""
+
 replicaCount: 1
 
 version: v1
@@ -84,3 +88,35 @@ istio:
       - match:
         - uri:
             prefix: "/"
+
+
+
+###  dependencies  ###
+
+## From bitnami/redis
+redis:
+  enabled: false
+  master:
+    nodeSelector: {}
+  cluster:
+    enabled: false
+  password: *redis_auth
+
+## From bitnami/mysql
+mysql:
+  enabled: false
+  image:
+    tag: 5.7
+  replication:
+    enabled: false
+  root:
+    forcePassword: true
+    password: *db_password  # FIXME: required while forcePassword=true
+  db:
+    name: hyperf
+    user: hyperf
+    password: *db_password  # FIXME: required while forcePassword=true
+    forcePassword: true
+  master:
+    nodeSelector: 
+      nodeSelector: {}

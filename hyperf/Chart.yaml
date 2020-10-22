@@ -19,3 +19,21 @@ version: 0.0.1
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
 appVersion: 2.0
+
+dependencies:
+  - name: mysql
+    version: 6.14.10
+    repository: https://charts.bitnami.com/bitnami
+    condition: mysql.enabled
+  - name: redis
+    version: 11.2.1
+    repository: https://charts.bitnami.com/bitnami
+    condition: redis.enabled
+redis:
+  enabled: true
+  master:
+    nodeSelector:
+      k3s.io/hostname: longyuan
+  cluster:
+    enabled: false
+  password: *redis_auth
