@@ -72,7 +72,7 @@ secret:
   db_collation: utf8mb4_unicode_ci
   db_prefix: ""
   redis_host: ""
-  redis_auth: ""
+  redis_auth: *redis_auth
   redis_port: '6379'
   redis_db: '0'
 
@@ -88,8 +88,6 @@ istio:
       - match:
         - uri:
             prefix: "/"
-
-
 
 ###  dependencies  ###
 

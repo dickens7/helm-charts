@@ -29,11 +29,3 @@ dependencies:
     version: 11.2.1
     repository: https://charts.bitnami.com/bitnami
     condition: redis.enabled
-redis:
-  enabled: true
-  master:
-    nodeSelector:
-      k3s.io/hostname: longyuan
-  cluster:
-    enabled: false
-  password: *redis_auth
