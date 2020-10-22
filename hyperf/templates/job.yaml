@@ -1,0 +1,24 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "hyperf.fullname" . }}-migrate
+spec:
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "false"
+      name: {{ include "hyperf.fullname" . }}-migrate
+    spec:
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      restartPolicy: OnFailure
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          command: ['php', '/var/www/bin/hyperf.php', 'migrate']
+          envFrom:
+            - secretRef:
+                name: {{ template "hyperf.fullname" . }}-env

@@ -1,0 +1,86 @@
+replicaCount: 1
+
+version: v1
+
+image:
+  repository: hyperf/hyperf
+  tag: latest
+  pullPolicy: Always
+  pullSecrets: []
+
+service:
+  type: ClusterIP
+  port: 9501
+
+livenessProbe:
+  httpGet:
+    path: /liveness
+    port: 9501
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /readiness
+    port: 9501
+  initialDelaySeconds: 5
+  periodSeconds: 10
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # requests:
+  #   cpu: 100m
+  #   memory: 100Mi
+  # limits:
+  #   cpu: 200m
+  #   memory: 200Mi
+
+nodeSelector: {}
+  # If you need use nodeSelector, uncomment the following lines, adjust them as necessary, and
+  # remove the curly braces after 'nodeSelector:'.
+  # goa-qa: yes
+
+volumeMounts: {}
+
+volumes: {}
+
+secret:
+  app_env: prod
+  app_debug: 'false'
+  app_name: hyperf
+  app_log_format: json
+  app_worker_num: '1'
+  app_max_coroutine: '100000'
+  app_max_request: '100000'
+  app_socket_buffer_size: '2097152'
+  app_task_worker_num: '1'
+  http_server_port: '9501'
+  db_driver: mysql
+  db_host: ""
+  db_port: '3306'
+  db_database: ""
+  db_username: ""
+  db_password: ""
+  db_charset: utf8mb4
+  db_collation: utf8mb4_unicode_ci
+  db_prefix: ""
+  redis_host: ""
+  redis_auth: ""
+  redis_port: '6379'
+  redis_db: '0'
+
+
+istio:
+  virtualService:
+    enabled: false
+    hosts:
+      - "*"
+    gateways:
+      - istio-system/istio-gateway
+    http:
+      - match:
+        - uri:
+            prefix: "/"

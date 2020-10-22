@@ -1,0 +1,31 @@
+{{- if .Values.istio.virtualService.enabled -}}
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: {{ include "hyperf.fullname" . }}
+spec:
+  hosts:
+  {{- range .Values.istio.virtualService.hosts }}
+    - {{ . | quote }}
+  {{- end }}
+  gateways:
+  {{- range .Values.istio.virtualService.gateways }}
+    - {{ . | quote }}
+  {{- end }}
+  http:
+    {{- toYaml .Values.istio.virtualService.http | nindent 4 }}
+      route:
+      - destination:
+          host: {{ include "hyperf.fullname" . }}
+          port:
+            number: 9501
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: {{ include "hyperf.fullname" . }}
+spec:
+  host: {{ include "hyperf.fullname" . }}
+  subsets:
+  {{- toYaml .Values.istio.subsets | nindent 4 }}
+{{- end }}
