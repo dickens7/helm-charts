@@ -1,0 +1,37 @@
+{{- if .Values.gateway.ingress -}}
+{{- $fullName := include "apisix.fullname" . -}}
+{{- $svcPort := .Values.gateway.http.servicePort -}}
+{{- $enableTls := .Values.gateway.ingress.tls -}}
+{{- if semverCompare ">=1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+apiVersion: networking.k8s.io/v1beta1
+{{- else -}}
+apiVersion: extensions/v1beta1
+{{- end }}
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "apisix.labels" . | nindent 4 }}
+  {{- with .Values.gateway.ingress.annotations }}
+  annotations:
+    {{- if $enableTls }}
+    cert-manager.io/cluster-issuer: letsencrypt
+    {{- end }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.gateway.ingress.tls }}
+  tls:
+    - hosts:
+        - {{ .Values.gateway.ingress.host | quote }}
+      secretName: {{ $fullName }}
+{{- end }}
+  rules:
+    - host: {{ .Values.gateway.ingress.host | quote }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ $fullName }}
+              servicePort: {{ $svcPort }}
+{{- end -}}

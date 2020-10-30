@@ -1,0 +1,162 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+replicaCount: 1
+image:
+  repository: i.harbor.dragonest.net/build-cache/gm-gateway
+  pullPolicy: Always
+  tag: latest
+  pullSecrets: []
+
+version: v1
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+gateway:
+  type: ClusterIP
+  # type: LoadBalancer
+  # annotations:
+  #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
+  http:
+    enabled: true
+    servicePort: 80
+    containerPort: 9080
+  tls:
+    enabled: false
+    servicePort: 443
+    containerPort: 9443
+    http2:
+      enabled: true
+
+  ingress: {}
+  #  annotations:
+  #    kubernetes.io/ingress.class: traefik
+  #    kubernetes.io/tls-acme: "true"
+  #  host: example.dragonest.com
+  #  tls: false
+
+
+apisix_config: |-
+  apisix:
+    enable_admin: true
+    enable_debug: false
+    admin_key:
+      - name: "admin"
+        key: edd1c9f034335f136f87ad84b625c8f1
+        role: admin
+      - name: "viewer"
+        key: 4054f7cf07e344346cd3f287985e76a2
+        role: viewer
+    allow_admin:
+      - 127.0.0.0/24 
+      - 0.0.0.0/0
+  etcd:
+    host:
+      - "http://10.43.112.186:2379"
+    prefix: "/gateway"
+    timeout: 30
+    user: root
+    password: root
+  nginx_config:
+    error_log: /dev/stdout
+    error_log_level: info
+    worker_processes: "1"
+    access_log: logs/account.log
+  # APISIX plugins to be enabled
+  plugins:
+    - example-plugin
+    - limit-req
+    - limit-count
+    - limit-conn
+    - key-auth
+    - basic-auth
+    - prometheus
+    - node-status
+    - jwt-auth
+    - zipkin
+    - ip-restriction
+    - grpc-transcode
+    - serverless-pre-function
+    - serverless-post-function
+    - openid-connect
+    - proxy-rewrite
+    - redirect
+    - response-rewrite
+    - fault-injection
+    - udp-logger
+    - wolf-rbac
+    - proxy-cache
+    - tcp-logger
+    - proxy-mirror
+    - kafka-logger
+    - cors
+    - rewrite-host
+  stream_plugins:
+    - mqtt-proxy
+
+resources:
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 0m
+    memory: 0Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+
+
+etcd:
+  enabled: true
+  nodeSelector:
+    k3s.io/hostname: longyuan
+  envVarsConfigMap: etcd-env-vars
+  auth:
+    rbac: 
+      enabled: true
+      rootPassword: root
+  livenessProbe:
+    enabled: false
+  readinessProbe:
+    enabled: false
+  persistence:
+    size: 2Gi
