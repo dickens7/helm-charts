@@ -4,7 +4,7 @@ metadata:
   name: apisix
 spec:
   hosts:
-    - "apisix.k3s-jcyfb-dev.ilongyuan.cn"
+    - "apisix.example.local"
   gateways:
     - "istio-system/istio-gateway"
   http:

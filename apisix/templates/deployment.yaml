@@ -76,16 +76,9 @@ spec:
           volumeMounts:
             - mountPath: /usr/local/apisix/conf/config.yaml
               name: apisix-config
-              subPath: config.yaml
+              subPath: config
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-        # - name: dnsmasq
-        #   image: "janeczku/go-dnsmasq:release-1.0.7"
-        #   args:
-        #     - --listen
-        #     - "127.0.0.1:53"
-        #     - --default-resolver
-        #     - --append-search-domains
       volumes:
         - configMap:
             name: {{ include "apisix.fullname" . }}

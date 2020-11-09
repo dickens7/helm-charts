@@ -19,7 +19,7 @@ kind: ConfigMap
 metadata:
   name: {{ include "apisix.fullname" . }}
 data:
-  config.yaml: |-
+  config: |-
     {{- .Values.apisix_config | nindent 4 }}
   
 ---

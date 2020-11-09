@@ -16,9 +16,9 @@
 
 replicaCount: 1
 image:
-  repository: i.harbor.dragonest.net/build-cache/gm-gateway
+  repository: apache/apisix
   pullPolicy: Always
-  tag: latest
+  tag: 2.0-alpine
   pullSecrets: []
 
 version: v1
@@ -56,14 +56,14 @@ gateway:
   #  annotations:
   #    kubernetes.io/ingress.class: traefik
   #    kubernetes.io/tls-acme: "true"
-  #  host: example.dragonest.com
+  #  host: apisix.example.local
   #  tls: false
 
 
 apisix_config: |-
   apisix:
     enable_admin: true
-    enable_debug: false
+    enable_debug: true
     admin_key:
       - name: "admin"
         key: edd1c9f034335f136f87ad84b625c8f1
@@ -76,47 +76,14 @@ apisix_config: |-
       - 0.0.0.0/0
   etcd:
     host:
-      - "http://10.43.112.186:2379"
-    prefix: "/gateway"
+      - "http://10.43.129.206:2379"
+    prefix: "/apisix"
     timeout: 30
-    user: root
-    password: root
   nginx_config:
     error_log: /dev/stdout
     error_log_level: info
     worker_processes: "1"
     access_log: logs/account.log
-  # APISIX plugins to be enabled
-  plugins:
-    - example-plugin
-    - limit-req
-    - limit-count
-    - limit-conn
-    - key-auth
-    - basic-auth
-    - prometheus
-    - node-status
-    - jwt-auth
-    - zipkin
-    - ip-restriction
-    - grpc-transcode
-    - serverless-pre-function
-    - serverless-post-function
-    - openid-connect
-    - proxy-rewrite
-    - redirect
-    - response-rewrite
-    - fault-injection
-    - udp-logger
-    - wolf-rbac
-    - proxy-cache
-    - tcp-logger
-    - proxy-mirror
-    - kafka-logger
-    - cors
-    - rewrite-host
-  stream_plugins:
-    - mqtt-proxy
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -144,15 +111,12 @@ tolerations: []
 affinity: {}
 
 
-
 etcd:
   enabled: true
-  nodeSelector:
-    k3s.io/hostname: longyuan
-  envVarsConfigMap: etcd-env-vars
+  # fullnameOverride: "etcd"
   auth:
     rbac: 
-      enabled: true
+      enabled: false
       rootPassword: root
   livenessProbe:
     enabled: false
@@ -160,3 +124,6 @@ etcd:
     enabled: false
   persistence:
     size: 2Gi
+
+etcdkeeper: 
+ enabled: true
