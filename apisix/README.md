@@ -1,15 +1,12 @@
-## GM2 gateway 服务
-
-统一网关
+## Apisix
 
 ### 安装
 
 使用 `helm` 安装
 
 ```
-helm repo add dragonest http://harbor.ops.ilongyuan.cn/chartrepo/charts --username <USERNAME> --password <PASSWORD>
-helm repo update
-helm installapisix dragonest/apisix -f <VALUES_FILE>
+helm dependency update
+helm install -n apisix apisix .
 ```
 
 ### 配置
