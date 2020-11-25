@@ -16,9 +16,9 @@
 
 replicaCount: 1
 image:
-  repository: apache/apisix
+  repository: dickens7/apisix
   pullPolicy: Always
-  tag: 2.0-alpine
+  tag: "2.1"
   pullSecrets: []
 
 version: v1
@@ -39,7 +39,10 @@ securityContext: {}
 gateway:
   type: ClusterIP
   # type: LoadBalancer
-  # annotations:
+  annotations:
+    prometheus.io/port: 9080
+    prometheus.io/path: /apisix/prometheus/metrics
+    prometheus.io/scrape: true
   #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
   http:
     enabled: true
@@ -63,7 +66,7 @@ gateway:
 apisix_config: |-
   apisix:
     enable_admin: true
-    enable_debug: true
+    enable_debug: false
     admin_key:
       - name: "admin"
         key: edd1c9f034335f136f87ad84b625c8f1
@@ -74,16 +77,17 @@ apisix_config: |-
     allow_admin:
       - 127.0.0.0/24 
       - 0.0.0.0/0
+    port_admin: 9080
   etcd:
     host:
-      - "http://10.43.129.206:2379"
+      - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
     prefix: "/apisix"
     timeout: 30
   nginx_config:
     error_log: /dev/stdout
-    error_log_level: info
+    error_log_level: warn
     worker_processes: "1"
-    access_log: logs/account.log
+    access_log: /dev/stdout
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -110,6 +114,12 @@ tolerations: []
 
 affinity: {}
 
+apisix-dashboard:
+  image:
+    repository: dickens7/apisix-dashboard
+    pullPolicy: Always
+    tag: dev
+  etcdHost: apisix-etcd-headless.apisix.svc.cluster.local:2379
 
 etcd:
   enabled: true
