@@ -15,9 +15,9 @@ helm install -n apisix apisix .
 
 | 参数名                            | 描述                                | 默认值                                                                               |
 | --------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
-| image.repository                  | 镜像仓库                            | `lyrelease-registry.cn-shanghai.cr.aliyuncs.com/ly_release/gm2-generator`            |
-| image.tag                         | 镜像版本                            | `IMAGE_VERSION`                                                                      |
-| image.pullPolicy                  | 镜像拉取策略                        | `IfNotPresent`                                                                       |
+| image.repository                  | 镜像仓库                            | `dickens7/apisix`            |
+| image.tag                         | 镜像版本                            | `2.1`                                                                      |
+| image.pullPolicy                  | 镜像拉取策略                        | `Always`                                                                       |
 | image.pullSecrets                 | 镜像拉取时使用的 secret             | `null`                                                                               |
 | replicaCount                      | 副本数量                            | `1`                                                                                  |
 | env                               | 环境变量                            | `[]`                                                                                 |
