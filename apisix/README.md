@@ -1,6 +1,6 @@
-## Apisix
+# Apisix
 
-### 安装
+## 安装
 
 使用 `helm` 安装
 
@@ -17,16 +17,13 @@ helm install -n apisix apisix .
 | --------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
 | image.repository                  | 镜像仓库                            | `dickens7/apisix`            |
 | image.tag                         | 镜像版本                            | `2.1`                                                                      |
-| image.pullPolicy                  | 镜像拉取策略                        | `Always`                                                                       |
-| image.pullSecrets                 | 镜像拉取时使用的 secret             | `null`                                                                               |
-| replicaCount                      | 副本数量                            | `1`                                                                                  |
-| env                               | 环境变量                            | `[]`                                                                                 |
-| readinessProbe                    | readiness 探针                      | `{}`                                                                                 |
-| gateway.ingress.host              | ingress 访问地址                    |                                                                                      |
+| image.pullPolicy                  | 镜像拉取策略                         | `Always`                                                                    |
+| image.pullSecrets                 | 镜像拉取时使用的 secret              | `null`                                                                       |
+| replicaCount                      | 副本数量                            | `1`                                                                        |
+| gateway.ingress.host              | ingress 访问地址                    |                                                                            
 | gateway.ingress.annotations       | ingress 注释                        | `{}`                                                                                 |
 | gateway.ingress.tls               | 是否开启 ingress 的 tls             | `false`                                                                              |
 | nodeSelector                      | 运行节点                            | `{}`                                                                                 |
 | resources                         | 资源限制                            | `{}`                                                                                 |
-| etcd.host                         | Etcd 地址                           |                                                                                      |
-| etcd.prefix                       | Etcd 前缀                           |                                                                                      |
-| etcd.timeout                      | Etcd 超时时间                       | `3`                                                                                  |
+| etcd.enabled                      | 启动 ETCD                              | `true`     |
+| etcdkeeper.enabled                | 启动 etcdkeeper                        | `true`                                                                     |

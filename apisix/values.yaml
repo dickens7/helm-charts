@@ -83,6 +83,8 @@ apisix_config: |-
       - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
     prefix: "/apisix"
     timeout: 30
+    user: root
+    password: root
   nginx_config:
     error_log: /dev/stdout
     error_log_level: warn
@@ -126,7 +128,7 @@ etcd:
   # fullnameOverride: "etcd"
   auth:
     rbac: 
-      enabled: false
+      enabled: true
       rootPassword: root
   livenessProbe:
     enabled: false
