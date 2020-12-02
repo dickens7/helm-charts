@@ -12,7 +12,7 @@ data:
         port: 8080 # `manager api` listening port
       etcd:
         endpoints: # supports defining multiple etcd host addresses for an etcd cluster
-          - apisix-etcd:2379
+          - {{ .Values.etcdHost }}
       log:
         error_log:
           level: warn # supports levels, lower to higher: debug, info, warn, error, panic, fatal

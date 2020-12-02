@@ -119,7 +119,7 @@ apisix-dashboard:
     repository: dickens7/apisix-dashboard
     pullPolicy: Always
     tag: "2.1"
-  etcdHost: apisix-etcd.apisix.svc.cluster.local:2379
+  etcdHost: apisix-etcd-headless.apisix.svc.cluster.local:2379
 
 etcd:
   enabled: true
