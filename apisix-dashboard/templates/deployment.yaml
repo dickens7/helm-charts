@@ -48,7 +48,7 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
-            - mountPath: /usr/local/apisix-dashboard/conf/conf.json
+            - mountPath: /usr/local/apisix-dashboard/conf/conf.yaml
               name: {{ include "apisix-dashboard.fullname" . }}
               subPath: config
       volumes:

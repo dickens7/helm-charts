@@ -83,8 +83,6 @@ apisix_config: |-
       - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
     prefix: "/apisix"
     timeout: 30
-    user: root
-    password: root
   nginx_config:
     error_log: /dev/stdout
     error_log_level: warn
@@ -120,20 +118,16 @@ apisix-dashboard:
   image:
     repository: dickens7/apisix-dashboard
     pullPolicy: Always
-    tag: dev
-  etcdHost: apisix-etcd-headless.apisix.svc.cluster.local:2379
+    tag: "2.1"
+  etcdHost: apisix-etcd.apisix.svc.cluster.local:2379
 
 etcd:
   enabled: true
   # fullnameOverride: "etcd"
   auth:
     rbac: 
-      enabled: true
+      enabled: false
       rootPassword: root
-  livenessProbe:
-    enabled: false
-  readinessProbe:
-    enabled: false
   persistence:
     size: 2Gi
 

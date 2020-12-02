@@ -6,34 +6,27 @@ metadata:
     {{- include "apisix-dashboard.labels" . | nindent 4 }}
 data:
   config: |-
-    {
-      "conf": {
-        "syslog": {
-          "host": "127.0.0.1"
-        },
-        "listen": {
-          "host": "0.0.0.0",
-          "port": 8080
-        },
-        "dag-lib-path": "",
-        "etcd": {
-          "endpoints": "{{ .Values.etcdHost }}"
-        }
-      },
-      "authentication": {
-        "session": {
-          "secret": "secret",
-          "expireTime": 3600
-        },
-        "user": [
-          {
-            "username": "admin",
-            "password": "admin"
-          },
-          {
-            "username": "user",
-            "password": "user"
-          }
-        ]
-      }
-    }
+    conf:
+      listen:
+        host: 0.0.0.0 # `manager api` listening ip or host name
+        port: 8080 # `manager api` listening port
+      etcd:
+        endpoints: # supports defining multiple etcd host addresses for an etcd cluster
+          - apisix-etcd:2379
+      log:
+        error_log:
+          level: warn # supports levels, lower to higher: debug, info, warn, error, panic, fatal
+          file_path:
+            logs/error.log # supports relative path, absolute path, standard output
+            # such as: logs/error.log, /tmp/logs/error.log, /dev/stdout, /dev/stderr
+    authentication:
+      secret:
+        secret # secret for jwt token generation.
+        # NOTE: Highly recommended to modify this value to protect `manager api`.
+        # if it's default value, when `manager api` start , it will generate a random string to replace it.
+      expire_time: 3600 # jwt token expire time, in second
+      users:
+        - username: admin # username and password for login `manager api`
+          password: admin
+        - username: user
+          password: user

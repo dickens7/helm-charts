@@ -6,13 +6,11 @@ replicaCount: 1
 
 image:
   repository: dickens7/apisix-dashboard
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "dev"
+  tag: "2.1"
 
 imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
 
 etcdHost: apisix-etcd:2379
 
