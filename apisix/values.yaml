@@ -115,6 +115,7 @@ tolerations: []
 affinity: {}
 
 apisix-dashboard:
+  fullnameOverride: "apisix-dashboard"
   image:
     repository: dickens7/apisix-dashboard
     pullPolicy: Always
