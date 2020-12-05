@@ -77,17 +77,21 @@ apisix_config: |-
     allow_admin:
       - 127.0.0.0/24 
       - 0.0.0.0/0
-    port_admin: 9080
   etcd:
     host:
       - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
     prefix: "/apisix"
     timeout: 30
+    # user: root
+    # password: 5tHkHhYkjr6cQY
+    tls:
+      verify: false
   nginx_config:
     error_log: /dev/stdout
     error_log_level: warn
     worker_processes: "1"
-    access_log: /dev/stdout
+    http:
+      access_log: /dev/stdout
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
