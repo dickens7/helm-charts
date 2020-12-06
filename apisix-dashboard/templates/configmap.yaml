@@ -20,5 +20,5 @@ data:
         # NOTE: Highly recommended to modify this value to protect `manager api`.
         # if it's default value, when `manager api` start , it will generate a random string to replace it.
       expire_time: 3600 # jwt token expire time, in second
-      user:
+      users:
       {{- toYaml .Values.config.authentication.users | nindent 8 }}
