@@ -12,6 +12,21 @@ image:
 
 imagePullSecrets: []
 
+config:
+  etcd:
+    endpoints:
+      - apisix-etcd:2379
+  log:
+    error_log:
+      level: debug
+      file_path: /dev/stdout
+  authentication:
+    users:
+      - username: admin
+        password: admin
+      - username: user
+        password: user
+
 etcdHost: apisix-etcd:2379
 
 serviceAccount:
