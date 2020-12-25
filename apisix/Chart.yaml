@@ -14,21 +14,18 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.0.7
+version: 2.1.0
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
-appVersion: v0.0.7
+appVersion: v2.1.0
 
 dependencies:
   - name: etcd
     version: 4.12.0
     repository: https://charts.bitnami.com/bitnami
     condition: etcd.enabled
-  - name: etcdkeeper
-    version: 0.1.0
-    repository: file://../etcdkeeper/
-    condition: etcdkeeper.enabled
   - name: apisix-dashboard
-    version: 0.1.0
+    version: 2.2.0
     repository: file://../apisix-dashboard
+    condition: apisix-dashboard.enabled
