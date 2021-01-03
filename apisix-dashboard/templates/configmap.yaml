@@ -11,14 +11,9 @@ data:
         host: 0.0.0.0 # `manager api` listening ip or host name
         port: 8080 # `manager api` listening port
       etcd:
-        endpoints: # supports defining multiple etcd host addresses for an etcd cluster
-          - {{ .Values.etcdHost }}
+        {{- toYaml .Values.config.etcd | nindent 8 }}
       log:
-        error_log:
-          level: warn # supports levels, lower to higher: debug, info, warn, error, panic, fatal
-          file_path:
-            logs/error.log # supports relative path, absolute path, standard output
-            # such as: logs/error.log, /tmp/logs/error.log, /dev/stdout, /dev/stderr
+        {{- toYaml .Values.config.log | nindent 8 }}
     authentication:
       secret:
         secret # secret for jwt token generation.
@@ -26,7 +21,4 @@ data:
         # if it's default value, when `manager api` start , it will generate a random string to replace it.
       expire_time: 3600 # jwt token expire time, in second
       users:
-        - username: admin # username and password for login `manager api`
-          password: admin
-        - username: user
-          password: user
+      {{- toYaml .Values.config.authentication.users | nindent 8 }}

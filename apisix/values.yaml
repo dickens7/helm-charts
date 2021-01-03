@@ -81,7 +81,8 @@ apisixConfig: |-
     error_log: /dev/stdout
     error_log_level: notice
     worker_processes: "1"
-    access_log: /dev/stdout
+    http:
+      access_log: /dev/stdout
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
