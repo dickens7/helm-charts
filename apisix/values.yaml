@@ -63,7 +63,7 @@ gateway:
   #  tls: false
 
 
-apisix_config: |-
+apisixConfig: |-
   apisix:
     enable_admin: true
     enable_debug: false
@@ -77,18 +77,9 @@ apisix_config: |-
     allow_admin:
       - 127.0.0.0/24 
       - 0.0.0.0/0
-  etcd:
-    host:
-      - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
-    prefix: "/apisix"
-    timeout: 30
-    # user: root
-    # password: 5tHkHhYkjr6cQY
-    tls:
-      verify: false
   nginx_config:
     error_log: /dev/stdout
-    error_log_level: warn
+    error_log_level: notice
     worker_processes: "1"
     http:
       access_log: /dev/stdout
@@ -119,6 +110,7 @@ tolerations: []
 affinity: {}
 
 apisix-dashboard:
+  enabled: true
   fullnameOverride: "apisix-dashboard"
   image:
     repository: dickens7/apisix-dashboard
