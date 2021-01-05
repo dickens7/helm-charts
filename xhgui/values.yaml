@@ -10,12 +10,22 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "latest"
 
+
+phpimage:
+  repository: dickens7/xhgui
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "0.0.2"
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 mongodb:
-  host: 'mongodb://mongodb:27017'
+  host: 'mongodb://root:root@xhgui-mongodb:27017'
+  auth:
+    rootPassword: root
+
 
 serviceAccount:
   # Specifies whether a service account should be created

@@ -46,8 +46,8 @@ spec:
             - name: source
               mountPath: /var/www/html
         - name: php
-          image: i.harbor.dragonest.net/build-cache/xhgui:0.0.1
-          imagePullPolicy: Always
+          image: "{{ .Values.phpimage.repository }}:{{ .Values.phpimage.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.phpimage.pullPolicy }}
           ports:
             - name: cgi
               containerPort: 9000
