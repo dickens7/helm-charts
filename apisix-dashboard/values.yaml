@@ -8,17 +8,21 @@ image:
   repository: dickens7/apisix-dashboard
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.1"
+  tag: "2.3"
 
 imagePullSecrets: []
 
 config:
   etcd:
     endpoints:
-      - apisix-etcd:2379
+      - etcd-headless:2379
+    # username: "root"
+    # password: "root"
   log:
     error_log:
       level: debug
+      file_path: /dev/stdout
+    access_log:
       file_path: /dev/stdout
   authentication:
     users:
@@ -26,8 +30,6 @@ config:
         password: admin
       - username: user
         password: user
-
-etcdHost: apisix-etcd:2379
 
 serviceAccount:
   # Specifies whether a service account should be created

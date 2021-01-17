@@ -18,7 +18,7 @@ replicaCount: 1
 image:
   repository: dickens7/apisix
   pullPolicy: Always
-  tag: "2.1"
+  tag: "2.2"
   pullSecrets: []
 
 version: v1
@@ -79,7 +79,7 @@ apisix_config: |-
       - 0.0.0.0/0
   etcd:
     host:
-      - "http://apisix-etcd-headless.apisix.svc.cluster.local:2379"
+      - "http://etcd-headless.apisix.svc.cluster.local:2379"
     prefix: "/apisix"
     timeout: 30
     # user: root
@@ -92,6 +92,56 @@ apisix_config: |-
     worker_processes: "1"
     http:
       access_log: /dev/stdout
+  plugins:                          # plugin list (sorted in alphabetical order)
+    - api-breaker
+    - authz-keycloak
+    - basic-auth
+    - batch-requests
+    - consumer-restriction
+    - cors
+    - echo
+    #- error-log-logger
+    #- example-plugin
+    - fault-injection
+    - grpc-transcode
+    - hmac-auth
+    - http-logger
+    - ip-restriction
+    - jwt-auth
+    - kafka-logger
+    - key-auth
+    - limit-conn
+    - limit-count
+    - limit-req
+    #- log-rotate
+    #- node-status
+    - openid-connect
+    - prometheus
+    - proxy-cache
+    - proxy-mirror
+    - proxy-rewrite
+    - redirect
+    - referer-restriction
+    - request-id
+    - request-validation
+    - response-rewrite
+    - serverless-post-function
+    - serverless-pre-function
+    # - skywalking
+    - sls-logger
+    - syslog
+    - tcp-logger
+    - udp-logger
+    - uri-blocker
+    - wolf-rbac
+    - zipkin
+    - server-info
+  plugin_attr:
+    skywalking:
+      service_name: APISIX
+      service_instance_name: "APISIX Instance Name"
+      endpoint_addr: http://skywalking-oap.skywalking.svc.cluster.local:12800
+  
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -123,12 +173,15 @@ apisix-dashboard:
   image:
     repository: dickens7/apisix-dashboard
     pullPolicy: Always
-    tag: "2.1"
-  etcdHost: apisix-etcd-headless.apisix.svc.cluster.local:2379
+    tag: "v2.3"
+  config:
+    etcd:
+      endpoints:
+        - etcd-headless:2379
 
 etcd:
   enabled: true
-  # fullnameOverride: "etcd"
+  fullnameOverride: "etcd"
   auth:
     rbac: 
       enabled: false

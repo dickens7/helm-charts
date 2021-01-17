@@ -22,4 +22,4 @@ helm install -n apisix apisix-dashboard .
 | replicaCount                      | 副本数量                            | `1`                                                                        |
 | nodeSelector                      | 运行节点                            | `{}`                                                                                 |
 | resources                         | 资源限制                            | `{}`                                                                                 |
-| etcdHost                          | ETCD host                          | `apisix-etcd:2379`     |
+| conf.etcd.endpoints               | ETCD host                          | `apisix-etcd:2379`     |
