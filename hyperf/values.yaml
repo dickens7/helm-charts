@@ -1,13 +1,18 @@
 global:
-  db_password: &db_password ""
-  redis_auth: &redis_auth ""
+  db_host: &db_host "hyperf-mysql"
+  db_rootpassword: &db_rootpassword "root"
+  db_database: &db_database "hyperf"
+  db_username: &db_username "hyperf"
+  db_password: &db_password "hyperf"
+  redis_host: &redis_host "redis-headless"
+  redis_auth: &redis_password ""
 
 replicaCount: 1
 
 version: v1
 
 image:
-  repository: hyperf/hyperf
+  repository: dickens7/hyperf-demo
   tag: latest
   pullPolicy: Always
   pullSecrets: []
@@ -16,19 +21,19 @@ service:
   type: ClusterIP
   port: 9501
 
-livenessProbe:
-  httpGet:
-    path: /liveness
-    port: 9501
-  initialDelaySeconds: 5
-  periodSeconds: 10
+livenessProbe: {}
+  # httpGet:
+  #   path: /liveness
+  #   port: 9501
+  # initialDelaySeconds: 5
+  # periodSeconds: 10
 
-readinessProbe:
-  httpGet:
-    path: /readiness
-    port: 9501
-  initialDelaySeconds: 5
-  periodSeconds: 10
+readinessProbe: {}
+  # httpGet:
+  #   path: /readiness
+  #   port: 9501
+  # initialDelaySeconds: 5
+  # periodSeconds: 10
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -63,58 +68,42 @@ secret:
   app_task_worker_num: '1'
   http_server_port: '9501'
   db_driver: mysql
-  db_host: ""
+  db_host: *db_host
   db_port: '3306'
-  db_database: ""
-  db_username: ""
-  db_password: ""
+  db_database: *db_database
+  db_username: *db_username
+  db_password: *db_password
   db_charset: utf8mb4
   db_collation: utf8mb4_unicode_ci
   db_prefix: ""
-  redis_host: ""
-  redis_auth: *redis_auth
+  redis_host: *redis_host
+  redis_auth: *redis_password
   redis_port: '6379'
   redis_db: '0'
-
-
-istio:
-  virtualService:
-    enabled: false
-    hosts:
-      - "*"
-    gateways:
-      - istio-system/istio-gateway
-    http:
-      - match:
-        - uri:
-            prefix: "/"
 
 ###  dependencies  ###
 
 ## From bitnami/redis
 redis:
-  enabled: false
+  enabled: true
   master:
     nodeSelector: {}
   cluster:
     enabled: false
-  password: *redis_auth
+  usePassword: true
+  password: *redis_password
 
 ## From bitnami/mysql
 mysql:
-  enabled: false
-  image:
-    tag: 5.7
-  replication:
-    enabled: false
-  root:
+  enabled: true
+  # image:
+    # tag: 8.0.22
+  # architecture: standalone
+  auth:
+    database: *db_database
+    username: *db_username
+    password: *db_password
+    rootPassword: *db_rootpassword
     forcePassword: true
-    password: *db_password  # FIXME: required while forcePassword=true
-  db:
-    name: hyperf
-    user: hyperf
-    password: *db_password  # FIXME: required while forcePassword=true
-    forcePassword: true
-  master:
-    nodeSelector: 
-      nodeSelector: {}
+  primary:
+    nodeSelector: {}
