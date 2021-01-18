@@ -1,0 +1,30 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: xhgui
+spec:
+  hosts:
+    - "xhgui.example.local"
+  gateways:
+    - "istio-system/istio-gateway"
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: xhgui
+            port:
+              number: 80
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: xhgui
+spec:
+  host: xhgui
+  subsets:
+    - name: v1
+      labels:
+        version: v1

@@ -11,5 +11,9 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - name: sidecar
+      port: 9501
+      targetPort: 9501
+      protocol: TCP
   selector:
     {{- include "xhgui.selectorLabels" . | nindent 4 }}
