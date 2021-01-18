@@ -58,6 +58,16 @@ spec:
           - mountPath: /var/www/html/xhgui-branch/config/config.default.php
             name: php-config
             subPath: config
+        - name: sidecar
+          image: dickens7/xhgui-sidecar:0.0.5
+          imagePullPolicy: {{ .Values.phpimage.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 9501
+              protocol: TCP
+          envFrom:
+          - secretRef:
+              name: {{ template "xhgui.fullname" . }}-sidecar-env
       volumes:
         - name: source
           emptyDir: {}

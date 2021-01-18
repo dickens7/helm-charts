@@ -1,3 +1,6 @@
+globel:
+  mongodb_dsn: &mongodb_dsn "mongodb://root:root@xhgui-mongodb:27017"
+
 # Default values for xhgui.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
@@ -13,19 +16,24 @@ image:
 
 phpimage:
   repository: dickens7/xhgui
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.2"
+  tag: "0.0.6"
 
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
 mongodb:
-  host: 'mongodb://root:root@xhgui-mongodb:27017'
+  host: *mongodb_dsn
   auth:
     rootPassword: root
 
+sidecar:
+  secret:
+    mongodb_uri: *mongodb_dsn
+    mongodb_connect_timeout: 3s
+    mongodb_read_write_timeout: 60s
 
 serviceAccount:
   # Specifies whether a service account should be created

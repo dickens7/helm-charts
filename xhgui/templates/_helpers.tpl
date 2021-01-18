@@ -60,3 +60,10 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+
+{{- define "xhgui.sidecarSecret" -}}
+{{- range $key, $val := .Values.sidecar.secret }}
+  {{ $key | upper}}: {{ $val | b64enc | quote }}
+{{- end -}}
+{{- end -}}
