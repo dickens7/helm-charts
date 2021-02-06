@@ -11,6 +11,30 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    - port: 9501
+      targetPort: http
+      protocol: TCP
+      name: hyperf
+  selector:
+    app.kubernetes.io/name: {{ include "hyperf.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "hyperf.fullname" . }}-headless
+  labels:
+    {{- include "hyperf.labels" . | nindent 4}}
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - port: 9501
+      targetPort: http
+      protocol: TCP
+      name: hyperf
   selector:
     app.kubernetes.io/name: {{ include "hyperf.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
