@@ -3,7 +3,7 @@ entries:
   apisix:
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-03-28T11:20:00.794705178+08:00"
+    created: "2021-03-28T13:47:58.543074025+08:00"
     description: A Helm chart for apisix
     digest: 17466a826b28b516915cf94f9480d80489b8b5a4cda5d01f6faa0e36f89f6396
     name: apisix
@@ -11,4 +11,15 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/apisix-2.4.0.tgz
     version: 2.4.0
-generated: "2021-03-28T11:20:00.789026684+08:00"
+  hyperf:
+  - apiVersion: v1
+    appVersion: "2.1"
+    created: "2021-03-28T13:47:58.55249509+08:00"
+    description: A Helm chart hyperf
+    digest: ddff1a6bd494714e6ab0398fdc38976fd98c36d79a1466c46108fd5c57c4f4c8
+    name: hyperf
+    type: application
+    urls:
+    - https://dickens7.github.io/helm-charts/hyperf-2.1.tgz
+    version: "2.1"
+generated: "2021-03-28T13:47:58.537318897+08:00"
