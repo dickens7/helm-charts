@@ -27,5 +27,5 @@ dependencies:
     condition: etcd.enabled
   - name: apisix-dashboard
     version: 2.4.0
-    repository: file://../apisix-dashboard
+    repository: https://dickens7.github.io/helm-charts
     condition: apisix-dashboard.enabled
