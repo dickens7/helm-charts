@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  apisix:
+  - apiVersion: v1
+    appVersion: 2.4.0
+    created: "2021-03-28T11:20:00.794705178+08:00"
+    description: A Helm chart for apisix
+    digest: 17466a826b28b516915cf94f9480d80489b8b5a4cda5d01f6faa0e36f89f6396
+    name: apisix
+    type: application
+    urls:
+    - https://dickens7.github.io/helm-charts/apisix-2.4.0.tgz
+    version: 2.4.0
+generated: "2021-03-28T11:20:00.789026684+08:00"
