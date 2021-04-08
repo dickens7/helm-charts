@@ -11,6 +11,10 @@ helm install -n apisix apisix-dashboard .
 
 ### 配置
 
+- schema 配置
+
+将 schema.json 放置到当前根目录中即可
+
 #### 参数
 
 | 参数名                            | 描述                                | 默认值                                                                               |
