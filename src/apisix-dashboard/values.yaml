@@ -13,6 +13,8 @@ image:
 imagePullSecrets: []
 
 config:
+  listen: 
+    port: 8080
   etcd:
     endpoints:
       - etcd-headless:2379
@@ -20,7 +22,7 @@ config:
     # password: "root"
   log:
     error_log:
-      level: debug
+      level: warn
       file_path: /dev/stdout
     access_log:
       file_path: /dev/stdout

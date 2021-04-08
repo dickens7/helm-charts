@@ -9,7 +9,7 @@ data:
     conf:
       listen:
         host: 0.0.0.0 # `manager api` listening ip or host name
-        port: 8080 # `manager api` listening port
+        port: {{ .Values.config.listen.port }} # `manager api` listening port
       etcd:
         {{- toYaml .Values.config.etcd | nindent 8 }}
       log:
