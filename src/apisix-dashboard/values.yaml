@@ -5,10 +5,10 @@
 replicaCount: 1
 
 image:
-  repository: dickens7/apisix-dashboard
+  repository: apache/apisix-dashboard
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "v2.4"
+  tag: "2.5"
 
 imagePullSecrets: []
 

@@ -13,7 +13,21 @@ helm install -n apisix apisix-dashboard .
 
 - schema 配置
 
-将 schema.json 放置到当前根目录中即可
+
+```
+apisix:
+  ...
+  enable_control: true
+  control:
+    ip: "127.0.0.1"
+    port: 9090
+```
+
+```
+curl 127.0.0.1:9080/v1/shecma > schema.json
+```
+
+将 schema.json 放置到当前根目录中与values.yaml同级即可
 
 #### 参数
 

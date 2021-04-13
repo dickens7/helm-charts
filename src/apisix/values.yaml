@@ -17,8 +17,8 @@
 replicaCount: 1
 image:
   repository: dickens7/apisix
-  pullPolicy: Always
-  tag: "2.3"
+  pullPolicy: IfNotPresent
+  tag: "2.5"
   pullSecrets: []
 
 version: v1
@@ -67,6 +67,10 @@ apisixConfig: |-
   apisix:
     enable_admin: true
     enable_debug: false
+    enable_control: true
+    control:
+      ip: "127.0.0.1"
+      port: 9090
     admin_key:
       - name: "admin"
         key: edd1c9f034335f136f87ad84b625c8f1
@@ -172,9 +176,9 @@ apisix-dashboard:
   enabled: true
   fullnameOverride: "apisix-dashboard"
   image:
-    repository: dickens7/apisix-dashboard
-    pullPolicy: Always
-    tag: "v2.4"
+    repository: apache/apisix-dashboard
+    pullPolicy: IfNotPresent
+    tag: "2.5"
   config:
     etcd:
       endpoints:
