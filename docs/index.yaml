@@ -3,9 +3,9 @@ entries:
   apisix:
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-05-18T19:30:56.062106494+08:00"
+    created: "2021-05-18T19:32:09.519437651+08:00"
     description: A Helm chart for apisix
-    digest: 458d5388f06005564ed9866efa78bd54e9d73d5537f0814eed744c079ea56bfc
+    digest: cccc27f22814fb3058e0be2ce54910b11a8a970a698de74ea6049159a05dfab2
     name: apisix
     type: application
     urls:
@@ -13,7 +13,7 @@ entries:
     version: 2.5.1
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-05-18T19:30:56.057854356+08:00"
+    created: "2021-05-18T19:32:09.516016274+08:00"
     description: A Helm chart for apisix
     digest: 11a3da199420af6f030214358ce68edf9049605b5c96d84df8e19e01612c4842
     name: apisix
@@ -23,7 +23,7 @@ entries:
     version: 2.5.0
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-05-18T19:30:56.053586257+08:00"
+    created: "2021-05-18T19:32:09.51101764+08:00"
     description: A Helm chart for apisix
     digest: 17466a826b28b516915cf94f9480d80489b8b5a4cda5d01f6faa0e36f89f6396
     name: apisix
@@ -34,7 +34,7 @@ entries:
   apisix-dashboard:
   - apiVersion: v1
     appVersion: 2.6.0
-    created: "2021-05-18T19:30:56.066941563+08:00"
+    created: "2021-05-18T19:32:09.523427809+08:00"
     description: A Helm chart for Kubernetes
     digest: 280c5cea2090d01c6ebb2a5b9a4a699363536d95f967f2babac898440163ab6c
     name: apisix-dashboard
@@ -44,7 +44,7 @@ entries:
     version: 2.6.0
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-05-18T19:30:56.066276584+08:00"
+    created: "2021-05-18T19:32:09.522774315+08:00"
     description: A Helm chart for Kubernetes
     digest: d2a3d13f089af55558837fb0fc1e201a3944f61acf08d8e9f6d381ee179f9482
     name: apisix-dashboard
@@ -54,7 +54,7 @@ entries:
     version: 2.5.0
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-05-18T19:30:56.06508958+08:00"
+    created: "2021-05-18T19:32:09.520648518+08:00"
     description: A Helm chart for Kubernetes
     digest: 17f13196a78e973dbbb93a39c2e35b4d2449a5770a57f5c5864f06f26055d245
     name: apisix-dashboard
@@ -64,7 +64,7 @@ entries:
     version: 2.4.1
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-05-18T19:30:56.063108458+08:00"
+    created: "2021-05-18T19:32:09.520049825+08:00"
     description: A Helm chart for Kubernetes
     digest: 0897da5b0a56222aaafc501149ddabc6efb7585613267b1b0bbdb52e88f857c2
     name: apisix-dashboard
@@ -75,7 +75,7 @@ entries:
   hyperf:
   - apiVersion: v1
     appVersion: "2.1"
-    created: "2021-05-18T19:30:56.076843874+08:00"
+    created: "2021-05-18T19:32:09.548495445+08:00"
     description: A Helm chart hyperf
     digest: ddff1a6bd494714e6ab0398fdc38976fd98c36d79a1466c46108fd5c57c4f4c8
     name: hyperf
@@ -83,4 +83,4 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/hyperf-2.1.tgz
     version: "2.1"
-generated: "2021-05-18T19:30:56.038023485+08:00"
+generated: "2021-05-18T19:32:09.507334184+08:00"
