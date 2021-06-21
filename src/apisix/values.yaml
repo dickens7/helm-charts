@@ -18,17 +18,19 @@ replicaCount: 1
 image:
   repository: dickens7/apisix
   pullPolicy: IfNotPresent
-  tag: "2.5"
+  tag: "2.6"
   pullSecrets: []
 
 version: v1
 
 podAnnotations: {}
 
-podSecurityContext: {}
+podSecurityContext:
+  {}
   # fsGroup: 2000
 
-securityContext: {}
+securityContext:
+  {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -61,7 +63,6 @@ gateway:
   #    kubernetes.io/tls-acme: "true"
   #  host: apisix.example.local
   #  tls: false
-
 
 apisixConfig: |-
   apisix:
@@ -145,7 +146,6 @@ apisixConfig: |-
       service_name: APISIX
       service_instance_name: "APISIX Instance Name"
       endpoint_addr: http://skywalking-oap.skywalking.svc.cluster.local:12800
-  
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -153,8 +153,8 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-    # cpu: 1000m
-    # memory: 256Mi
+  # cpu: 1000m
+  # memory: 256Mi
   requests:
     cpu: 0m
     memory: 0Mi
@@ -175,10 +175,6 @@ affinity: {}
 apisix-dashboard:
   enabled: true
   fullnameOverride: "apisix-dashboard"
-  image:
-    repository: apache/apisix-dashboard
-    pullPolicy: IfNotPresent
-    tag: "2.5"
   config:
     etcd:
       endpoints:
@@ -188,11 +184,11 @@ etcd:
   enabled: true
   fullnameOverride: "etcd"
   auth:
-    rbac: 
+    rbac:
       enabled: false
       rootPassword: root
   persistence:
     size: 2Gi
 
-etcdkeeper: 
- enabled: true
+etcdkeeper:
+  enabled: true
