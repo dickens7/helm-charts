@@ -6,19 +6,13 @@
 
 ## Quick Start
 
-### Add Helm repository
-
-```
-helm repo add dickens7 https://dickens7.github.io/helm-charts/
-```
-
-### Install the chart
+- Install the chart
 
 ```shell
 helm install <name> dickens7/apisix . -n <namespace> 
 ```
 
-### Uninstallation
+- Uninstallation
 
 ```
 helm uninstall <name> -n <namespace> 
