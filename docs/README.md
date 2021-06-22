@@ -11,6 +11,6 @@ helm dependency update
 ## chart list 
 
 - [x] [apisix](./apisix.md)
-- [x] [apisix-dashborad](./apisix-dashborad.md)
+- [x] [apisix-dashboard](./apisix-dashboard.md)
 - [x] [etcdkeeper](./etcdkeeper.md)
 - [x] [hyperf](./hyperf.md)
