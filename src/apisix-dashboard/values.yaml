@@ -18,9 +18,9 @@ config:
   etcd:
     endpoints:
       - etcd-headless:2379
-    # username: "root"
-    # password: "root"
-    # prefix: "apisix"
+    prefix: "apisix"
+    username: ""
+    password: ""
   log:
     error_log:
       level: warn

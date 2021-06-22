@@ -16,9 +16,9 @@
 
 replicaCount: 1
 image:
-  repository: dickens7/apisix
+  repository: apache/apisix
   pullPolicy: IfNotPresent
-  tag: "2.6"
+  tag: "2.6-alpine"
   pullSecrets: []
 
 version: v1
