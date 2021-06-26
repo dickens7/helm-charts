@@ -2,7 +2,7 @@
 
 > Prerequisites
 > - Kubernetes cluster 1.18+
-> - Helm 3.0.0+
+> - Helm 3.1.0+
 
 ## Quick Start
 
@@ -27,9 +27,4 @@ helm uninstall <name> -n <namespace>
 | image.tag | Image tag |
 | image.pullPolicy | The image pull polic |
 | image.pullSecrets | The imagePullSecrets names for all deployments |
-| Apisix Dashboard | |
-| apisix-dashboard.enabled | Enable dashboard to store chart |
-| apisix-dashboard.config.etcd.endpoints | The etcd endpoints |
-| apisix-dashboard.config.etcd.prefix | The etcd prefix |
-| apisix-dashboard.config.etcd.username | The etcd username |
-| apisix-dashboard.config.etcd.password | The etcd password |
+| [Apisix Dashboard](./apisix-dashboard.md) |  |

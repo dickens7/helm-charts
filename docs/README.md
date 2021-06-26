@@ -2,7 +2,7 @@
 
 > Prerequisites
 > - Kubernetes cluster 1.18+
-> - Helm 3.0.0+
+> - Helm 3.1.0+
 
 
 ## add a chart repository
