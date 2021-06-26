@@ -33,6 +33,7 @@ config:
         password: admin
       - username: user
         password: user
+  jsonschema: ""
 
 serviceAccount:
   # Specifies whether a service account should be created

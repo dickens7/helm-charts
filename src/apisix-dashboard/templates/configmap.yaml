@@ -22,7 +22,7 @@ data:
       expire_time: 3600 # jwt token expire time, in second
       users:
       {{- toYaml .Values.config.authentication.users | nindent 8 }}
-  {{ if .Files.Get "schema.json" }}
+  {{ if .Values.config.jsonschema }}
   schema: |- 
-{{ .Files.Get "schema.json" | indent 4 }}
+{{ .Values.config.jsonschema | indent 4 }}
   {{ end }}
