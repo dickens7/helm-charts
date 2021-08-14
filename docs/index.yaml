@@ -3,7 +3,7 @@ entries:
   apisix:
   - apiVersion: v1
     appVersion: 2.8.0
-    created: "2021-08-14T19:35:10.526756302+08:00"
+    created: "2021-08-14T20:11:36.684130969+08:00"
     description: A Helm chart for apisix
     digest: 344019d2f3b9e5d4e900cd5b5289eef804117a1a3548012ae08e48d60c6f8855
     name: apisix
@@ -13,7 +13,7 @@ entries:
     version: 2.8.0
   - apiVersion: v1
     appVersion: 2.6.0
-    created: "2021-08-14T19:35:10.521313322+08:00"
+    created: "2021-08-14T20:11:36.679892871+08:00"
     description: A Helm chart for apisix
     digest: 5af6212cf9516611369bee8af0aa2ec5cd23a40713c4a7ea185c985ea3bb6158
     name: apisix
@@ -23,7 +23,7 @@ entries:
     version: 2.6.0
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-08-14T19:35:10.515356247+08:00"
+    created: "2021-08-14T20:11:36.675399799+08:00"
     description: A Helm chart for apisix
     digest: cccc27f22814fb3058e0be2ce54910b11a8a970a698de74ea6049159a05dfab2
     name: apisix
@@ -33,7 +33,7 @@ entries:
     version: 2.5.1
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-08-14T19:35:10.51152372+08:00"
+    created: "2021-08-14T20:11:36.67170469+08:00"
     description: A Helm chart for apisix
     digest: 11a3da199420af6f030214358ce68edf9049605b5c96d84df8e19e01612c4842
     name: apisix
@@ -43,7 +43,7 @@ entries:
     version: 2.5.0
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-08-14T19:35:10.507963433+08:00"
+    created: "2021-08-14T20:11:36.667884334+08:00"
     description: A Helm chart for apisix
     digest: 17466a826b28b516915cf94f9480d80489b8b5a4cda5d01f6faa0e36f89f6396
     name: apisix
@@ -54,7 +54,7 @@ entries:
   apisix-dashboard:
   - apiVersion: v1
     appVersion: 2.7.0
-    created: "2021-08-14T19:35:10.531763535+08:00"
+    created: "2021-08-14T20:11:36.688487845+08:00"
     description: A Helm chart for Kubernetes
     digest: 1568a6e4a17d9d6232ec38523e83c40073608f7e78716624f975087f3fa9280c
     name: apisix-dashboard
@@ -64,7 +64,7 @@ entries:
     version: 2.7.2
   - apiVersion: v1
     appVersion: 2.7.0
-    created: "2021-08-14T19:35:10.530944974+08:00"
+    created: "2021-08-14T20:11:36.68787961+08:00"
     description: A Helm chart for Kubernetes
     digest: cb3f8859d25488bd2d163984a0945a774ecd86e177c7e8e9660aead5062a10bb
     name: apisix-dashboard
@@ -74,7 +74,7 @@ entries:
     version: 2.7.1
   - apiVersion: v1
     appVersion: 2.7.0
-    created: "2021-08-14T19:35:10.530173759+08:00"
+    created: "2021-08-14T20:11:36.687281866+08:00"
     description: A Helm chart for Kubernetes
     digest: f922b53100a82bcc7534d15e5f3e576bb90af4ee8fc69c8cb346632836f81708
     name: apisix-dashboard
@@ -84,7 +84,7 @@ entries:
     version: 2.7.0
   - apiVersion: v1
     appVersion: 2.6.0
-    created: "2021-08-14T19:35:10.529491722+08:00"
+    created: "2021-08-14T20:11:36.686624744+08:00"
     description: A Helm chart for Kubernetes
     digest: 280c5cea2090d01c6ebb2a5b9a4a699363536d95f967f2babac898440163ab6c
     name: apisix-dashboard
@@ -94,7 +94,7 @@ entries:
     version: 2.6.0
   - apiVersion: v1
     appVersion: 2.5.0
-    created: "2021-08-14T19:35:10.528816815+08:00"
+    created: "2021-08-14T20:11:36.685997695+08:00"
     description: A Helm chart for Kubernetes
     digest: d2a3d13f089af55558837fb0fc1e201a3944f61acf08d8e9f6d381ee179f9482
     name: apisix-dashboard
@@ -104,7 +104,7 @@ entries:
     version: 2.5.0
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-08-14T19:35:10.528127799+08:00"
+    created: "2021-08-14T20:11:36.685414413+08:00"
     description: A Helm chart for Kubernetes
     digest: 17f13196a78e973dbbb93a39c2e35b4d2449a5770a57f5c5864f06f26055d245
     name: apisix-dashboard
@@ -114,7 +114,7 @@ entries:
     version: 2.4.1
   - apiVersion: v1
     appVersion: 2.4.0
-    created: "2021-08-14T19:35:10.527457042+08:00"
+    created: "2021-08-14T20:11:36.684768905+08:00"
     description: A Helm chart for Kubernetes
     digest: 0897da5b0a56222aaafc501149ddabc6efb7585613267b1b0bbdb52e88f857c2
     name: apisix-dashboard
@@ -122,4 +122,20 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/apisix-dashboard-2.4.0.tgz
     version: 2.4.0
-generated: "2021-08-14T19:35:10.504429142+08:00"
+  xhgui:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-08-14T20:11:36.695754382+08:00"
+    dependencies:
+    - condition: mongodb.enabled
+      name: mongodb
+      repository: https://charts.bitnami.com/bitnami
+      version: 10.23.10
+    description: A Helm chart for Kubernetes
+    digest: dc9919dfff6cec37ee9a7bc2636b779342776eb139c7e5d687f5a7d1a8f3aeeb
+    name: xhgui
+    type: application
+    urls:
+    - https://dickens7.github.io/helm-charts/xhgui-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-08-14T20:11:36.664126009+08:00"

@@ -18,7 +18,7 @@ phpimage:
   repository: dickens7/xhgui
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "0.0.6"
+  tag: "0.0.4"
 
 imagePullSecrets: []
 nameOverride: ""

@@ -59,7 +59,7 @@ spec:
             name: php-config
             subPath: config
         - name: sidecar
-          image: dickens7/xhgui-sidecar:0.0.5
+          image: dickens7/xhgui-sidecar:0.0.2
           imagePullPolicy: {{ .Values.phpimage.pullPolicy }}
           ports:
             - name: http
