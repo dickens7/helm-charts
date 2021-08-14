@@ -1,9 +1,9 @@
 # Helm Charts
 
 > Prerequisites
+>
 > - Kubernetes cluster 1.18+
 > - Helm 3.1.0+
-
 
 ## add a chart repository
 
@@ -17,7 +17,7 @@ helm repo add dickens7 https://dickens7.github.io/helm-charts/
 helm repo update
 ```
 
-## chart list 
+## chart list
 
 - [x] [apisix](./apisix.md)
 - [x] [apisix-dashboard](./apisix-dashboard.md)
