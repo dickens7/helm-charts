@@ -27,6 +27,15 @@ spec:
       serviceAccountName: {{ include "apisix-dashboard.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{ if .Values.apisixControl }}
+      initContainers:
+        - name: jsonschema
+          image: busybox:latest
+          command: ['sh', '-c', 'if [ ! -f "/conf/schema.json" ]; then wget -O /conf/schema.json {{ .Values.apisixControl }}:9090/v1/schema; fi']  
+          volumeMounts:
+            - mountPath: /conf
+              name: schemaconf
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -56,10 +65,17 @@ spec:
               name: {{ include "apisix-dashboard.fullname" . }}
               subPath: schema
             {{ end }}
+            {{ if .Values.apisixControl }}
+            - mountPath: /usr/local/apisix-dashboard/conf/schema.json
+              name: schemaconf
+              subPath: schema.json
+            {{ end }}
       volumes:
-        - configMap:
+        - name: {{ include "apisix-dashboard.fullname" . }}
+          configMap:
             name: {{ include "apisix-dashboard.fullname" . }}
-          name: {{ include "apisix-dashboard.fullname" . }}
+        - name: schemaconf
+          emptyDir: {}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

@@ -18,7 +18,7 @@ replicaCount: 1
 image:
   repository: apache/apisix
   pullPolicy: IfNotPresent
-  tag: "2.6-alpine"
+  tag: "2.8-alpine"
   pullSecrets: []
 
 version: v1
@@ -42,7 +42,7 @@ gateway:
   type: ClusterIP
   # type: LoadBalancer
   annotations:
-    prometheus.io/port: 9080
+    prometheus.io/port: 9091
     prometheus.io/path: /apisix/prometheus/metrics
     prometheus.io/scrape: true
   #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
@@ -70,7 +70,7 @@ apisixConfig: |-
     enable_debug: false
     enable_control: true
     control:
-      ip: "127.0.0.1"
+      ip: "0.0.0.0"
       port: 9090
     admin_key:
       - name: "admin"
@@ -88,7 +88,7 @@ apisixConfig: |-
     prefix: "/apisix"
     timeout: 30
     # user: root
-    # password: 5tHkHhYkjr6cQY
+    # password: password
     tls:
       verify: false
   nginx_config:
@@ -144,8 +144,13 @@ apisixConfig: |-
   plugin_attr:
     skywalking:
       service_name: APISIX
-      service_instance_name: "APISIX Instance Name"
+      service_instance_name: "$hostname"
       endpoint_addr: http://skywalking-oap.skywalking.svc.cluster.local:12800
+    prometheus:
+      enable_export_server: true
+      export_addr:
+        ip: 0.0.0.0
+        port: 9091
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -179,6 +184,7 @@ apisix-dashboard:
     etcd:
       endpoints:
         - etcd-headless:2379
+  apisixControl: http://apisix-control
 
 etcd:
   enabled: true
