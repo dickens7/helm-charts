@@ -69,17 +69,32 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "apisix.fullname" . }}-control
+  name: {{ include "apisix.fullname" . }}-internal
+  {{- if .Values.apisixConfig.plugin_attr.prometheus.enable_export_server }}
   annotations:
-    {{- range $key, $value := .Values.gateway.annotations }}
-      {{ $key }}: {{ $value | quote }}
-    {{- end }}
+    prometheus.io/port: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port | quote }}
+    prometheus.io/path: /apisix/prometheus/metrics
+    prometheus.io/scrape: "true"
+  {{- end }}
   labels:
     {{- include "apisix.labels" . | nindent 4 }}
 spec:
   selector:
     {{- include "apisix.selectorLabels" . | nindent 4 }}
   ports:
-    - protocol: TCP
-      port: 9090
-      targetPort: 9090
+    - name: control
+      protocol: TCP
+      port: {{ .Values.apisixConfig.apisix.control.port}}
+      targetPort: {{ .Values.apisixConfig.apisix.control.port}}
+    {{- if .Values.apisixConfig.plugin_attr.prometheus.enable_export_server }}
+    - name: prometheus
+      protocol: TCP
+      port: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port}}
+      targetPort: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port}}
+    {{- end }}
+    {{- if .Values.apisixConfig.apisix.enable_admin }}
+    - name: admin
+      protocol: TCP
+      port: {{ .Values.apisixConfig.apisix.port_admin}}
+      targetPort: {{ .Values.apisixConfig.apisix.port_admin}}
+    {{- end }}

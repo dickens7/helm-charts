@@ -41,10 +41,7 @@ securityContext:
 gateway:
   type: ClusterIP
   # type: LoadBalancer
-  annotations:
-    prometheus.io/port: 9091
-    prometheus.io/path: /apisix/prometheus/metrics
-    prometheus.io/scrape: true
+  # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
   http:
     enabled: true
@@ -57,34 +54,28 @@ gateway:
     http2:
       enabled: true
 
-  ingress: {}
-  #  annotations:
-  #    kubernetes.io/ingress.class: traefik
-  #    kubernetes.io/tls-acme: "true"
-  #  host: apisix.example.local
-  #  tls: false
-
-apisixConfig: |-
+apisixConfig:
   apisix:
+    node_listen:
+      - port: 9080
+        enable_http2: true
     enable_admin: true
     enable_debug: false
     enable_control: true
     control:
       ip: "0.0.0.0"
-      port: 9090
+      port: "9090"
     admin_key:
-      - name: "admin"
+      - name: admin
         key: edd1c9f034335f136f87ad84b625c8f1
         role: admin
-      - name: "viewer"
-        key: 4054f7cf07e344346cd3f287985e76a2
-        role: viewer
     allow_admin:
       - 127.0.0.0/24 
       - 0.0.0.0/0
+    port_admin: 9180
   etcd:
     host:
-      - "http://etcd-headless.apisix.svc.cluster.local:2379"
+      - http://etcd-headless:2379
     prefix: "/apisix"
     timeout: 30
     # user: root
@@ -145,7 +136,7 @@ apisixConfig: |-
     skywalking:
       service_name: APISIX
       service_instance_name: "$hostname"
-      endpoint_addr: http://skywalking-oap.skywalking.svc.cluster.local:12800
+      endpoint_addr: "http://skywalking-oap.skywalking.svc.cluster.local:12800"
     prometheus:
       enable_export_server: true
       export_addr:
@@ -184,7 +175,17 @@ apisix-dashboard:
     etcd:
       endpoints:
         - etcd-headless:2379
-  apisixControl: http://apisix-control
+  apisixControl: "http://apisix-internal:9090"
+
+ingress-controller:
+  enabled: true
+  nameOverride: ingress
+  config:
+    logLevel: "warn"
+    appNamespaces: ["*"]
+    apisix:
+      baseURL: "http://apisix-internal:9180/apisix/admin"
+      adminKey: "edd1c9f034335f136f87ad84b625c8f1"
 
 etcd:
   enabled: true

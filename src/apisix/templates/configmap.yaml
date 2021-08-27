@@ -20,9 +20,4 @@ metadata:
   name: {{ include "apisix.fullname" . }}
 data:
   config: |-
-    etcd:
-      host:
-        - "http://{{ .Values.etcd.fullnameOverride }}.{{ .Release.Namespace }}.svc.cluster.local:2379"
-      prefix: "/apisix"
-      timeout: 30
-    {{- .Values.apisixConfig | nindent 4 }}
+    {{- toYaml .Values.apisixConfig | nindent 4  }}

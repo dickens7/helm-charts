@@ -31,7 +31,7 @@ spec:
       initContainers:
         - name: jsonschema
           image: busybox:latest
-          command: ['sh', '-c', 'if [ ! -f "/conf/schema.json" ]; then wget -O /conf/schema.json {{ .Values.apisixControl }}:9090/v1/schema; fi']  
+          command: ['sh', '-c', 'if [ ! -f "/conf/schema.json" ]; then wget -O /conf/schema.json {{ .Values.apisixControl }}/v1/schema; fi']  
           volumeMounts:
             - mountPath: /conf
               name: schemaconf
