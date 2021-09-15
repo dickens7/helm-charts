@@ -52,7 +52,7 @@ spec:
     protocol: TCP
   {{- end }}
     {{- if .Values.gateway.http2.enabled }}
-  - name: apisix
+  - name: apisix-http2
     port: {{ .Values.gateway.http2.servicePort }}
     targetPort: {{ .Values.gateway.http2.containerPort }}
   {{- if (and (eq .Values.gateway.type "NodePort") (not (empty .Values.gateway.http2.nodePort))) }}
