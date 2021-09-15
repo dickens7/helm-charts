@@ -51,6 +51,15 @@ spec:
   {{- end }}
     protocol: TCP
   {{- end }}
+    {{- if .Values.gateway.http2.enabled }}
+  - name: apisix
+    port: {{ .Values.gateway.http2.servicePort }}
+    targetPort: {{ .Values.gateway.http2.containerPort }}
+  {{- if (and (eq .Values.gateway.type "NodePort") (not (empty .Values.gateway.http2.nodePort))) }}
+    nodePort: {{ .Values.gateway.http2.nodePort }}
+  {{- end }}
+    protocol: TCP
+  {{- end }}
   {{- if or .Values.gateway.tls.enabled }}
   - name: apisix-tls
     port: {{ .Values.gateway.tls.servicePort }}
