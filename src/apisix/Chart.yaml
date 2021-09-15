@@ -30,7 +30,6 @@ dependencies:
     repository: https://dickens7.github.io/helm-charts
     condition: apisix-dashboard.enabled
   - name: apisix-ingress-controller
-    version: 0.6.0
+    version: 0.7.0
     repository: https://charts.apiseven.com
-    condition: ingress-controller.enabled
-    alias: ingress-controller
+    condition: apisix-ingress-controller.enabled

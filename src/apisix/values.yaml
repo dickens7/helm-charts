@@ -199,8 +199,8 @@ apisix-dashboard:
         - etcd-headless:2379
   apisixControl: "http://apisix-internal:9090"
 
-ingress-controller:
-  enabled: false
+apisix-ingress-controller:
+  enabled: true
   nameOverride: ingress
   config:
     logLevel: "warn"
