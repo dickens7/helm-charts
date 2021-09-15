@@ -19,7 +19,7 @@ config:
   etcd:
     endpoints:
       - etcd-headless:2379
-    prefix: "apisix"
+    prefix: "/apisix"
     username: ""
     password: ""
   log:

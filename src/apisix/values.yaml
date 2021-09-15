@@ -204,7 +204,9 @@ apisix-ingress-controller:
   nameOverride: ingress
   config:
     logLevel: "warn"
-    appNamespaces: ["*"]
+    enableProfiling: false
+    kubernetes:
+      appNamespaces: [""]
     apisix:
       baseURL: "http://apisix-internal:9180/apisix/admin"
       adminKey: "edd1c9f034335f136f87ad84b625c8f1"
@@ -218,6 +220,3 @@ etcd:
       rootPassword: root
   persistence:
     size: 2Gi
-
-etcdkeeper:
-  enabled: true
