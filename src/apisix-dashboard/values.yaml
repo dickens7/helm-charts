@@ -8,7 +8,7 @@ image:
   repository: apache/apisix-dashboard
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2.8"
+  tag: "2.9"
 imagePullSecrets: []
 
 apisixControl: http://apisix-control:9090
@@ -20,8 +20,8 @@ config:
     endpoints:
       - etcd-headless:2379
     prefix: "/apisix"
-    username: ""
-    password: ""
+    #username: ""
+    #password: ""
   log:
     error_log:
       level: warn
@@ -30,10 +30,8 @@ config:
       file_path: /dev/stdout
   authentication:
     users:
-      - username: admin
-        password: admin
-      - username: user
-        password: user
+      username: admin
+      # password: admin
   jsonschema: ""
 
 serviceAccount:

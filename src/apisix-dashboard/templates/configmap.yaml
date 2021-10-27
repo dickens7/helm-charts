@@ -1,3 +1,4 @@
+{{- $paasword :=  default (include "apisix-dashboard.password" .) .Values.config.authentication.users.password -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -5,6 +6,11 @@ metadata:
   labels:
     {{- include "apisix-dashboard.labels" . | nindent 4 }}
 data:
+{{- if .Release.IsInstall }}
+  password: {{ $paasword }}
+{{ else }}
+  password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace "apisix-dashboard").data "password" }}
+{{ end }}
   config: |-
     conf:
       listen:
@@ -16,12 +22,15 @@ data:
         {{- toYaml .Values.config.log | nindent 8 }}
     authentication:
       secret:
-        secret # secret for jwt token generation.
-        # NOTE: Highly recommended to modify this value to protect `manager api`.
-        # if it's default value, when `manager api` start , it will generate a random string to replace it.
-      expire_time: 3600 # jwt token expire time, in second
+        {{ randAlphaNum 20 }}
+      expire_time: 3600
       users:
-      {{- toYaml .Values.config.authentication.users | nindent 8 }}
+        - username: {{ .Values.config.authentication.users.username }}
+  {{- if .Release.IsInstall }}
+          password: {{ $paasword }}
+  {{ else }}
+          password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace "apisix-dashboard").data "password"}}
+  {{ end }}
   {{ if .Values.config.jsonschema }}
   schema: |- 
 {{ .Values.config.jsonschema | indent 4 }}
