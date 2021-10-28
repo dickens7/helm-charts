@@ -63,3 +63,13 @@ Create the name of the service account to use
 {{- end -}}
 {{- end -}}
 
+{{/*
+Create the key of the apisix to use
+*/}}
+{{- define "apisix.adminKey" -}}
+{{- if .Release.IsInstall }}
+{{- randAlpha 10 -}}{{- randAlphaNum 6 -}}
+{{ else }}
+{{- index (lookup "v1" "ConfigMap" .Release.Namespace "apisix").data "adminKey" -}}
+{{ end }}
+{{ end }}

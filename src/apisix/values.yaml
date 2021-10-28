@@ -18,7 +18,7 @@ replicaCount: 1
 image:
   repository: apache/apisix
   pullPolicy: IfNotPresent
-  tag: "2.9-alpine"
+  tag: "2.10.0-alpine"
   pullSecrets: []
 
 version: v1
@@ -63,30 +63,7 @@ gateway:
 
 apisixConfig:
   apisix:
-    node_listen:
-      - port: 9080
-        enable_http2: false
-      - port: 9083
-        enable_http2: true
-    enable_admin: true
     enable_debug: true
-    enable_control: true
-    control:
-      ip: "0.0.0.0"
-      port: "9090"
-    admin_key:
-      - name: admin
-        key: edd1c9f034335f136f87ad84b625c8f1
-        role: admin
-    allow_admin:
-      - 127.0.0.0/24 
-      - 0.0.0.0/0
-    port_admin: 9180
-  ssl: 
-    enable: true
-    listen:
-      - port: 9443
-        enable_http2: true
   etcd:
     host:
       - http://etcd-headless:2379
@@ -151,19 +128,9 @@ apisixConfig:
     #- log-rotate                    # priority: 100
     # <- recommend to use priority (0, 100) for your custom plugins
     - example-plugin                 # priority: 0
-    - skywalking                     # priority: -1100
+    # - skywalking                     # priority: -1100
     - serverless-post-function       # priority: -2000
     - ext-plugin-post-req            # priority: -3000
-  plugin_attr:
-    skywalking:
-      service_name: APISIX
-      service_instance_name: "$hostname"
-      endpoint_addr: "http://skywalking-oap.skywalking.svc.cluster.local:12800"
-    prometheus:
-      enable_export_server: true
-      export_addr:
-        ip: 0.0.0.0
-        port: 9091
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
@@ -208,7 +175,9 @@ apisix-ingress-controller:
     kubernetes:
       appNamespaces: [""]
     apisix:
-      baseURL: "http://apisix-internal:9180/apisix/admin"
+      serviceName: apisix-internal
+      serviceNamespace: ingress-apisix
+      servicePort: 9180
       adminKey: "edd1c9f034335f136f87ad84b625c8f1"
 
 etcd:

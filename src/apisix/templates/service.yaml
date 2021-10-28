@@ -79,12 +79,10 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "apisix.fullname" . }}-internal
-  {{- if .Values.apisixConfig.plugin_attr.prometheus.enable_export_server }}
   annotations:
-    prometheus.io/port: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port | quote }}
+    prometheus.io/port: "9091"
     prometheus.io/path: /apisix/prometheus/metrics
     prometheus.io/scrape: "true"
-  {{- end }}
   labels:
     {{- include "apisix.labels" . | nindent 4 }}
 spec:
@@ -93,17 +91,13 @@ spec:
   ports:
     - name: control
       protocol: TCP
-      port: {{ .Values.apisixConfig.apisix.control.port}}
-      targetPort: {{ .Values.apisixConfig.apisix.control.port}}
-    {{- if .Values.apisixConfig.plugin_attr.prometheus.enable_export_server }}
+      port: 9090
+      targetPort: 9090
     - name: prometheus
       protocol: TCP
-      port: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port}}
-      targetPort: {{ .Values.apisixConfig.plugin_attr.prometheus.export_addr.port}}
-    {{- end }}
-    {{- if .Values.apisixConfig.apisix.enable_admin }}
+      port: 9091
+      targetPort: 9091
     - name: admin
       protocol: TCP
-      port: {{ .Values.apisixConfig.apisix.port_admin}}
-      targetPort: {{ .Values.apisixConfig.apisix.port_admin}}
-    {{- end }}
+      port: 9180
+      targetPort: 9180

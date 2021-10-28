@@ -13,10 +13,11 @@ spec:
       {{- include "apisix-dashboard.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        version/config: {{ randAlpha 10 -}}{{- randAlphaNum 6 }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "apisix-dashboard.selectorLabels" . | nindent 8 }}
     spec:
@@ -29,7 +30,7 @@ spec:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{ if .Values.apisixControl }}
       initContainers:
-        - name: jsonschema
+        - name: init-confschema
           image: busybox:latest
           command: ['sh', '-c', 'if [ ! -f "/conf/schema.json" ]; then wget -O /conf/schema.json {{ .Values.apisixControl }}/v1/schema; fi']  
           volumeMounts:
