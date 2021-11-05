@@ -173,7 +173,7 @@ apisix-ingress-controller:
     logLevel: "warn"
     enableProfiling: false
     kubernetes:
-      appNamespaces: [""]
+      appNamespaces: ["*"]
     apisix:
       serviceName: apisix-internal
       serviceNamespace: ingress-apisix
