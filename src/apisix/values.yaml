@@ -79,9 +79,11 @@ apisixConfig:
     worker_processes: "1"
     http:
       access_log: /dev/stdout
+      real_ip_header: X-Forwarded-For
+      real_ip_recursive: "on" 
       real_ip_from: 
+        - 192.168.0.0/16
         - 10.0.0.0/8
-        - 192.168.0.0/12
         - 172.16.0.0/12
   plugins:                          # plugin list (sorted by priority)
     - client-control                 # priority: 22000
