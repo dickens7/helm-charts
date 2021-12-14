@@ -18,7 +18,7 @@ replicaCount: 1
 image:
   repository: apache/apisix
   pullPolicy: IfNotPresent
-  tag: "2.10.1-alpine"
+  tag: "2.10.2-alpine"
   pullSecrets: []
 
 version: v1
@@ -79,12 +79,6 @@ apisixConfig:
     worker_processes: "1"
     http:
       access_log: /dev/stdout
-      real_ip_header: X-Forwarded-For
-      real_ip_recursive: "on" 
-      real_ip_from: 
-        - 192.168.0.0/16
-        - 10.0.0.0/8
-        - 172.16.0.0/12
   plugins:                          # plugin list (sorted by priority)
     - client-control                 # priority: 22000
     - ext-plugin-pre-req             # priority: 12000
@@ -188,6 +182,7 @@ apisix-ingress-controller:
 
 etcd:
   enabled: true
+  replicaCount: 3
   fullnameOverride: "etcd"
   auth:
     rbac:
@@ -195,3 +190,7 @@ etcd:
       rootPassword: root
   persistence:
     size: 2Gi
+  autoCompactionMode: periodic
+  autoCompactionRetention: 10m
+  metrics:
+    enabled: true
