@@ -254,6 +254,7 @@ data:
           jwks: 1m
           introspection: 10m
           access-tokens: 1m
+          ext-plugin: 1m
 
     etcd:
       {{- if .Values.etcd.enabled }}
