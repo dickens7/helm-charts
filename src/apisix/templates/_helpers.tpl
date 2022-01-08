@@ -70,6 +70,6 @@ Create the key of the apisix to use
 {{- if .Release.IsInstall }}
 {{- randAlpha 10 -}}{{- randAlphaNum 6 -}}
 {{ else }}
-{{- index (lookup "v1" "ConfigMap" .Release.Namespace "apisix").data "adminKey" -}}
+{{- index (lookup "v1" "ConfigMap" .Release.Namespace (include "apisix.fullname" .)).data "adminKey" | default {{randAlpha 10}} -}}
 {{ end }}
 {{ end }}

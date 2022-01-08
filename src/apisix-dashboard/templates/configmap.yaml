@@ -29,7 +29,7 @@ data:
   {{- if .Release.IsInstall }}
           password: {{ $paasword }}
   {{ else }}
-          password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace "apisix-dashboard").data "password"}}
+          password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace (include "apisix-dashboard.fullname" .)).data "password" | default {{randAlpha 10}} }}
   {{ end }}
   {{ if .Values.config.jsonschema }}
   schema: |- 
