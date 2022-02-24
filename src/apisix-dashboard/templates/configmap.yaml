@@ -1,4 +1,5 @@
 {{- $paasword :=  default (include "apisix-dashboard.password" .) .Values.config.authentication.users.password -}}
+
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -29,9 +30,9 @@ data:
   {{- if .Release.IsInstall }}
           password: {{ $paasword }}
   {{ else }}
-          password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace (include "apisix-dashboard.fullname" .)).data "password" | default {{randAlpha 10}} }}
+          password: {{ index (lookup "v1" "ConfigMap" .Release.Namespace (include "apisix-dashboard.fullname" .)).data "password" | default "admin" }}
   {{ end }}
   {{ if .Values.config.jsonschema }}
   schema: |- 
-{{ .Values.config.jsonschema | indent 4 }}
+    {{ .Values.config.jsonschema | indent 4 }}
   {{ end }}

@@ -4,7 +4,7 @@
 
 使用 `helm` 安装
 
-```
+```sh
 helm dependency update
 helm install -n apisix apisix-dashboard .
 ```
@@ -13,8 +13,7 @@ helm install -n apisix apisix-dashboard .
 
 - schema 配置
 
-
-```
+```yaml
 apisix:
   ...
   enable_control: true
@@ -23,7 +22,7 @@ apisix:
     port: 9090
 ```
 
-```
+```sh
 curl 127.0.0.1:9080/v1/shecma > schema.json
 ```
 
