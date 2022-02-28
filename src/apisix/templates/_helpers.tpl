@@ -101,6 +101,11 @@ apisix:
       - port: {{ .Values.gateway.tls.containerPort }}
         enable_http2: true
   enable_control: true
+  allow_admin:
+    - 127.0.0.0/24 
+    - 0.0.0.0/0
+    #- "::/64"
+  port_admin: 9180
   control:
     ip: 0.0.0.0
     port: 9090

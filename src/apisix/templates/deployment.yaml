@@ -77,9 +77,6 @@ spec:
             - mountPath: /usr/local/apisix/conf/config.yaml
               name: apisix-config
               subPath: config
-            - mountPath: /usr/local/apisix/conf/config-default.yaml
-              name: apisix-config
-              subPath: defaultConfig
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:

@@ -3,7 +3,7 @@ entries:
   apisix:
   - apiVersion: v2
     appVersion: 2.12.1
-    created: "2022-02-27T22:41:54.730082273+08:00"
+    created: "2022-02-28T22:57:11.037981055+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -18,7 +18,7 @@ entries:
       repository: https://charts.apiseven.com
       version: 0.9.0
     description: A Helm chart for apisix
-    digest: 8a195ac68ef8f7e31f91dd60d13fa1f507ad82734b0717d33b8a8812ec00358f
+    digest: b3244eeaadfdb704a5a890ffbcbca88a6b6672b1594da0bc88597ecc882c810f
     name: apisix
     type: application
     urls:
@@ -26,7 +26,7 @@ entries:
     version: 2.12.0
   - apiVersion: v2
     appVersion: 2.11.0
-    created: "2022-02-27T22:41:54.722787908+08:00"
+    created: "2022-02-28T22:57:11.031836182+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -48,31 +48,8 @@ entries:
     - https://dickens7.github.io/helm-charts/apisix-2.11.1.tgz
     version: 2.11.1
   - apiVersion: v2
-    appVersion: 2.11.0
-    created: "2022-02-27T22:41:54.71660766+08:00"
-    dependencies:
-    - condition: etcd.enabled
-      name: etcd
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.10.5
-    - condition: apisix-dashboard.enabled
-      name: apisix-dashboard
-      repository: https://dickens7.github.io/helm-charts
-      version: 2.9.2
-    - condition: apisix-ingress-controller.enabled
-      name: apisix-ingress-controller
-      repository: https://charts.apiseven.com
-      version: 0.8.0
-    description: A Helm chart for apisix
-    digest: 00b69be0946b125bd0726ec797c43d1f3ed9dc1285e5b3f430372f5f1f77a3f4
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.11.0.tgz
-    version: 2.11.0
-  - apiVersion: v2
     appVersion: 2.10.2
-    created: "2022-02-27T22:41:54.707518406+08:00"
+    created: "2022-02-28T22:57:11.019630854+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -93,182 +70,20 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/apisix-2.10.4.tgz
     version: 2.10.4
-  - apiVersion: v2
-    appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.699167155+08:00"
-    dependencies:
-    - condition: etcd.enabled
-      name: etcd
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.9.4
-    - condition: apisix-dashboard.enabled
-      name: apisix-dashboard
-      repository: https://dickens7.github.io/helm-charts
-      version: 2.9.0
-    - condition: apisix-ingress-controller.enabled
-      name: apisix-ingress-controller
-      repository: https://charts.apiseven.com
-      version: 0.8.0
-    description: A Helm chart for apisix
-    digest: 899496eeee14846b19285d745e74530c3cdbb6fbfaec82c59a0cd4eeb1bad0d5
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.10.3.tgz
-    version: 2.10.3
-  - apiVersion: v2
-    appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.692582419+08:00"
-    dependencies:
-    - condition: etcd.enabled
-      name: etcd
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.9.4
-    - condition: apisix-dashboard.enabled
-      name: apisix-dashboard
-      repository: https://dickens7.github.io/helm-charts
-      version: 2.9.0
-    - condition: apisix-ingress-controller.enabled
-      name: apisix-ingress-controller
-      repository: https://charts.apiseven.com
-      version: 0.8.0
-    description: A Helm chart for apisix
-    digest: 3bad170254dc608087a38897e4ec20f086fb3c9594df8c1de6af7d6ecfe20d8b
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.10.2.tgz
-    version: 2.10.2
-  - apiVersion: v2
-    appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.683616083+08:00"
-    dependencies:
-    - condition: etcd.enabled
-      name: etcd
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.9.4
-    - condition: apisix-dashboard.enabled
-      name: apisix-dashboard
-      repository: https://dickens7.github.io/helm-charts
-      version: 2.9.0
-    - condition: apisix-ingress-controller.enabled
-      name: apisix-ingress-controller
-      repository: https://charts.apiseven.com
-      version: 0.8.0
-    description: A Helm chart for apisix
-    digest: 9caab05f54a4a8798c158ed7a8a109cea366851939de994f1d56573fc9aa2aa4
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.10.1.tgz
-    version: 2.10.1
-  - apiVersion: v2
-    appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.676385756+08:00"
-    dependencies:
-    - condition: etcd.enabled
-      name: etcd
-      repository: https://charts.bitnami.com/bitnami
-      version: 6.9.4
-    - condition: apisix-dashboard.enabled
-      name: apisix-dashboard
-      repository: https://dickens7.github.io/helm-charts
-      version: 2.9.0
-    - condition: apisix-ingress-controller.enabled
-      name: apisix-ingress-controller
-      repository: https://charts.apiseven.com
-      version: 0.8.0
-    description: A Helm chart for apisix
-    digest: 6e6c18d8a59569d78319680514b54dea82e422cb3777da3e50148e9ffdfe971f
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.10.0.tgz
-    version: 2.10.0
-  - apiVersion: v1
-    appVersion: 2.9.0
-    created: "2022-02-27T22:41:54.763109799+08:00"
-    description: A Helm chart for apisix
-    digest: 1df3290f6f2b3954587774bbca30ea784a95f8f8959200cb6aea6b77b936ac5c
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.9.0.tgz
-    version: 2.9.0
-  - apiVersion: v1
-    appVersion: 2.8.0
-    created: "2022-02-27T22:41:54.755086428+08:00"
-    description: A Helm chart for apisix
-    digest: 8149a059d26a53f0af3538164a194767b9afd5e9ec07edafb63b840b39f631af
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.8.0.tgz
-    version: 2.8.0
-  - apiVersion: v1
-    appVersion: 2.6.0
-    created: "2022-02-27T22:41:54.748495028+08:00"
-    description: A Helm chart for apisix
-    digest: 5af6212cf9516611369bee8af0aa2ec5cd23a40713c4a7ea185c985ea3bb6158
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.6.0.tgz
-    version: 2.6.0
-  - apiVersion: v1
-    appVersion: 2.5.0
-    created: "2022-02-27T22:41:54.742093159+08:00"
-    description: A Helm chart for apisix
-    digest: cccc27f22814fb3058e0be2ce54910b11a8a970a698de74ea6049159a05dfab2
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.5.1.tgz
-    version: 2.5.1
-  - apiVersion: v1
-    appVersion: 2.5.0
-    created: "2022-02-27T22:41:54.737500803+08:00"
-    description: A Helm chart for apisix
-    digest: 11a3da199420af6f030214358ce68edf9049605b5c96d84df8e19e01612c4842
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.5.0.tgz
-    version: 2.5.0
-  - apiVersion: v1
-    appVersion: 2.4.0
-    created: "2022-02-27T22:41:54.733808912+08:00"
-    description: A Helm chart for apisix
-    digest: 17466a826b28b516915cf94f9480d80489b8b5a4cda5d01f6faa0e36f89f6396
-    name: apisix
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-2.4.0.tgz
-    version: 2.4.0
   apisix-dashboard:
   - apiVersion: v2
     appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.76503975+08:00"
+    created: "2022-02-28T22:57:11.038633582+08:00"
     description: A Helm chart for Kubernetes
-    digest: e9bd72b47a3a66e3206f51b31e84ffd4810bda2e17fb6645c1d23f7f85c01c9a
+    digest: 82d75b0ee544d64d74562b400b71743cba311a2804f859d4ae028211adf7eb99
     name: apisix-dashboard
     type: application
     urls:
     - https://dickens7.github.io/helm-charts/apisix-dashboard-2.10.2.tgz
     version: 2.10.2
   - apiVersion: v2
-    appVersion: 2.10.1
-    created: "2022-02-27T22:41:54.764093345+08:00"
-    description: A Helm chart for Kubernetes
-    digest: c705a6dd3b4f6f190d3d412399c0b2fca07e8a37ee4ac4412d036380ce13ad84
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.10.1.tgz
-    version: 2.10.1
-  - apiVersion: v2
     appVersion: 2.9.0
-    created: "2022-02-27T22:41:54.77271554+08:00"
+    created: "2022-02-28T22:57:11.039291215+08:00"
     description: A Helm chart for Kubernetes
     digest: 6cabb9c6e8bfceac5fa7fedc3b52d69a1d48bd9972ccf34dc5669260f9fcc6f4
     name: apisix-dashboard
@@ -276,110 +91,10 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/apisix-dashboard-2.9.2.tgz
     version: 2.9.2
-  - apiVersion: v2
-    appVersion: 2.9.0
-    created: "2022-02-27T22:41:54.772101331+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 8a7d1f3c753d127ca133d14e4720e38a1682124692b05c7362c207271825599e
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.9.1.tgz
-    version: 2.9.1
-  - apiVersion: v2
-    appVersion: 2.9.0
-    created: "2022-02-27T22:41:54.771496733+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 35602e64de5743ec3539bc8d9ff429f7d3f662f279da6e95b789e939bf57ee27
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.9.0.tgz
-    version: 2.9.0
-  - apiVersion: v1
-    appVersion: 2.8.0
-    created: "2022-02-27T22:41:54.770846314+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 3276e2fe033f289fdf82771233fd3da3547c9e7242c8a704f14c27e1a1722494
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.8.0.tgz
-    version: 2.8.0
-  - apiVersion: v1
-    appVersion: 2.7.0
-    created: "2022-02-27T22:41:54.770196606+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 1568a6e4a17d9d6232ec38523e83c40073608f7e78716624f975087f3fa9280c
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.7.2.tgz
-    version: 2.7.2
-  - apiVersion: v1
-    appVersion: 2.7.0
-    created: "2022-02-27T22:41:54.769549186+08:00"
-    description: A Helm chart for Kubernetes
-    digest: cb3f8859d25488bd2d163984a0945a774ecd86e177c7e8e9660aead5062a10bb
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.7.1.tgz
-    version: 2.7.1
-  - apiVersion: v1
-    appVersion: 2.7.0
-    created: "2022-02-27T22:41:54.768934784+08:00"
-    description: A Helm chart for Kubernetes
-    digest: f922b53100a82bcc7534d15e5f3e576bb90af4ee8fc69c8cb346632836f81708
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.7.0.tgz
-    version: 2.7.0
-  - apiVersion: v1
-    appVersion: 2.6.0
-    created: "2022-02-27T22:41:54.768040396+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 280c5cea2090d01c6ebb2a5b9a4a699363536d95f967f2babac898440163ab6c
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.6.0.tgz
-    version: 2.6.0
-  - apiVersion: v1
-    appVersion: 2.5.0
-    created: "2022-02-27T22:41:54.767328605+08:00"
-    description: A Helm chart for Kubernetes
-    digest: d2a3d13f089af55558837fb0fc1e201a3944f61acf08d8e9f6d381ee179f9482
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.5.0.tgz
-    version: 2.5.0
-  - apiVersion: v1
-    appVersion: 2.4.0
-    created: "2022-02-27T22:41:54.766422103+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 17f13196a78e973dbbb93a39c2e35b4d2449a5770a57f5c5864f06f26055d245
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.4.1.tgz
-    version: 2.4.1
-  - apiVersion: v1
-    appVersion: 2.4.0
-    created: "2022-02-27T22:41:54.765768848+08:00"
-    description: A Helm chart for Kubernetes
-    digest: 0897da5b0a56222aaafc501149ddabc6efb7585613267b1b0bbdb52e88f857c2
-    name: apisix-dashboard
-    type: application
-    urls:
-    - https://dickens7.github.io/helm-charts/apisix-dashboard-2.4.0.tgz
-    version: 2.4.0
   static:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-02-27T22:41:54.773299018+08:00"
+    created: "2022-02-28T22:57:11.039817111+08:00"
     description: A Helm chart for Kubernetes
     digest: 7ad319d024b41d40afbf88119e99b79d9ac5fe5a3299bee559c5d17c721dd6ce
     name: static
@@ -390,7 +105,7 @@ entries:
   xhgui:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-02-27T22:41:54.781385713+08:00"
+    created: "2022-02-28T22:57:11.048412337+08:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -403,4 +118,4 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/xhgui-0.1.0.tgz
     version: 0.1.0
-generated: "2022-02-27T22:41:54.666883383+08:00"
+generated: "2022-02-28T22:57:11.011294706+08:00"
