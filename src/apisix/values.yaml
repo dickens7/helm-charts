@@ -14,21 +14,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-replicaCount: 1
+## @section Image parameters
+## @param image.repository The docker image repository
+## @param image.tag The docker image tag
+## @param image.pullPolicy The docker image pull policy
+## @param image.pullSecrets The docker image pull secrets
 image:
   repository: apache/apisix
   pullPolicy: IfNotPresent
   tag: "2.12.1-alpine"
   pullSecrets: []
 
+## @param version The version of apisix to deploy
 version: v1
 
+## @param podAnnotations Annotations to add to the apisix pods
+## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
 
+## @param podSecurityContext Security context for the apisix pods
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
 podSecurityContext:
   {}
   # fsGroup: 2000
 
+## @param securityContext Security context for the apisix containers
+## ref: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/#set-the-security-context-for-a-pod
 securityContext:
   {}
   # capabilities:
@@ -38,21 +49,39 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+
+## @section Gateway parameters
+## @param gateway.type apisix replicas service type
+
 gateway:
   # type: ClusterIP
   type: LoadBalancer
   # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
+
+
+  ## @param gateway.http.enable enable http gateway
+  ## @param gateway.http.servicePort http gateway port
+  ## @param gateway.http.containerPort http gateway container port
   http:
     enabled: true
     servicePort: 80
     containerPort: 9080
     #nodePort: 39080
+
+  ## @param gateway.http2.enable enable http2 gateway
+  ## @param gateway.http2.servicePort http2 gateway port
+  ## @param gateway.http2.containerPort http2 gateway container port
   http2:
     enabled: true
     servicePort: 9083
     containerPort: 9083
     #nodePort: 39083
+
+  ## @param gateway.tls.enable enable tcp gateway
+  ## @param gateway.tls.servicePort tcp gateway port
+  ## @param gateway.tls.containerPort tcp gateway container port
+  ## @param gateway.tls.http2.enable enable http2 gateway
   tls:
     enabled: false
     servicePort: 443
@@ -61,6 +90,21 @@ gateway:
     http2:
       enabled: true
 
+  ## @param gateway.stream.enable enable stream gateway
+  ## @param gateway.stream.only enable stream gateway only
+  ## @param gateway.stream.tcp enable stream gateway tcp
+  ## @param gateway.stream.udp enable stream gateway udp
+  stream:
+    enabled: false
+    only: false
+    tcp:
+      - 9100
+    udp:
+      - 9200
+
+## @section Apisix Config parameters
+## @param apisixConfig Apisix config
+## ref: https://github.com/apache/apisix/blob/master/conf/config-default.yaml
 apisixConfig:
   apisix:
     enable_debug: true
@@ -85,31 +129,55 @@ apisixConfig:
   #       priority: 7997                                                                    
   #       file: /tmp/http_wasm_filter.wasm
 
+## @section Apisix replicas configuration parameters
+## @param replicaCount Number of apisix replicas to deploy
+replicaCount: 1
+
+## @param resources.request.cpu The request CPU limit
+## @param resources.request.memory The request memory limit
+## @param resources.limits.cpu The cpu resource limit
+## @param resources.limits.memory The memory resource limit
+## ref: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
+  limits: {}
   # cpu: 1000m
   # memory: 256Mi
   requests:
     cpu: 0m
     memory: 0Mi
 
+## @param autoscaline.enabled enable autoscaline
+## @param autoscaline.minReplicas min replicas
+## @param autoscaline.maxReplicas max replicas
+## @param autoscaline.targetCPUUtilizationPercentage target cpu utilization percentage
+## @param autoscaline.targetMemoryUtilizationPercentage target memory utilization percentage
+## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 10
   targetCPUUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
+## @param nodeSelector Node labels for Apisix master pods assignment
+## ref: https://kubernetes.io/docs/user-guide/node-selection/
 nodeSelector: {}
 
+## @param tolerations Tolerations for Apisix; master pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
 
+## @param affinity Affinity for Apisix pods assignment
+## ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
 affinity: {}
 
+## @section Apisix Dashboard parameters
+## @param apisix-dashboard.enabled enable apisix-dashboard
+## ref: 
 apisix-dashboard:
   enabled: true
   fullnameOverride: "apisix-dashboard"
@@ -119,6 +187,8 @@ apisix-dashboard:
         - etcd-headless:2379
   apisixControl: "http://apisix-internal:9090"
 
+## @section Apisix Ingress parameters
+## @param apisix-ingress-controller.enabled enable apisix-ingress-controller
 apisix-ingress-controller:
   enabled: true
   nameOverride: ingress
@@ -133,6 +203,8 @@ apisix-ingress-controller:
       servicePort: 9180
       adminKey: "edd1c9f034335f136f87ad84b625c8f1"
 
+## @section Etcd parameters
+## @param etcd.enabled enable etcd
 etcd:
   enabled: true
   replicaCount: 1

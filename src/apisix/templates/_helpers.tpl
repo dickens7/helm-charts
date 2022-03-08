@@ -1,3 +1,19 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 {{/* vim: set filetype=mustache: */}}
 {{/*
 Expand the name of the chart.
@@ -109,13 +125,37 @@ apisix:
   control:
     ip: 0.0.0.0
     port: 9090
+  {{- if or (index .Values "apisix-ingress-controller" "enabled") .Values.gateway.stream.enabled }}
+  stream_proxy:
+    enable: {{ .Values.gateway.stream.only }}
+    {{- if or (index .Values "apisix-ingress-controller" "enabled") (gt (len .Values.gateway.stream.tcp) 0) }}
+    tcp:
+      {{- if gt (len .Values.gateway.stream.tcp) 0}}
+      {{- range .Values.gateway.stream.tcp }}
+      - {{ . }}
+      {{- end }}
+      {{- else}}
+      - 9100
+      {{- end }}
+    {{- end }}
+    {{- if or (index .Values "apisix-ingress-controller" "enabled") (gt (len .Values.gateway.stream.udp) 0) }}
+    udp:
+      {{- if gt (len .Values.gateway.stream.udp) 0}}
+      {{- range .Values.gateway.stream.udp }}
+      - {{ . }}
+      {{- end }}
+      {{- else}}
+      - 9200
+      {{- end }}
+    {{- end }}
+  {{- end }}
 etcd:
   {{- if .Values.etcd.enabled }}
   {{- if .Values.etcd.fullnameOverride }}
-  host:                           # it's possible to define multiple etcd hosts addresses of the same etcd cluster.
+  host:
     - "http://{{ .Values.etcd.fullnameOverride }}.{{ .Release.Namespace }}:{{ $etcdService.port | default 2379 }}"
   {{- else }}
-  host:                           # it's possible to define multiple etcd hosts addresses of the same etcd cluster.
+  host:
     - "http://{{ .Release.Name }}-etcd.{{ .Release.Namespace }}:{{ $etcdService.port | default 2379 }}"
   {{- end }}
   {{- else }}

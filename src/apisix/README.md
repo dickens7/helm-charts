@@ -1,30 +1,109 @@
-# Apisix
+# apisx
 
-## 安装
+> Prerequisites
+>
+> - Kubernetes cluster 1.18+
+> - Helm 3.1.0+
 
-使用 `helm` 安装
+## Quick Start
 
-```bash
-helm dependency update
-helm install -n apisix apisix .
+- Install the chart
+
+```shell
+helm install <name> dickens7/apisix . -n <namespace> 
 ```
 
-### 配置
+- Uninstallation
 
-#### 参数
+```bash
+helm uninstall <name> -n <namespace> 
+```
 
-| 参数名                            | 描述                                | 默认值                                                                               |
-| --------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
-| image.repository                  | 镜像仓库                            | `dickens7/apisix`            |
-| image.tag                         | 镜像版本                            | `2.1`                                                                      |
-| image.pullPolicy                  | 镜像拉取策略                         | `Always`                                                                    |
-| image.pullSecrets                 | 镜像拉取时使用的 secret              | `null`                                                                       |
-| replicaCount                      | 副本数量                            | `1`                                                                        |
-| gateway.ingress.host              | ingress 访问地址                    |
-| gateway.ingress.annotations       | ingress 注释                        | `{}`                                                                                 |
-| gateway.ingress.tls               | 是否开启 ingress 的 tls             | `false`                                                                              |
-| nodeSelector                      | 运行节点                            | `{}`                                                                                 |
-| resources                         | 资源限制                            | `{}`                                                                                 |
-| etcd.enabled                      | 启动 ETCD                              | `true`     |
-| etcdkeeper.enabled                | 启动 etcdkeeper                        | `true`                                                                     |
-|
+## Image parameters
+
+| Parameter | Description |
+|--|--|
+| image.repository | The docker image repository |
+| image.tag | The docker image tag |
+| image.pullPolicy | The docker image pull policy |
+| image.pullSecrets | The docker image pull secrets |
+
+## Container parameters
+
+| Parameter | Description |
+|--|--|
+| podAnnotations | Annotations to add to the apisix pods |
+| podSecurityContext | Security context for the apisix pods |
+| securityContext | Security context for the apisix containers |
+
+## Gateway parameters
+
+| Parameter | Description |
+|--|--|
+| gateway.type | apisix replicas service type |
+| gateway.http.enable | enable http gateway |
+| gateway.http.servicePort | http gateway port |
+| gateway.http.containerPort | http gateway container port |
+| gateway.http2.enable | enable http2 gateway |
+| gateway.http2.servicePort | http2 gateway port |
+| gateway.http2.containerPort | http2 gateway container port |
+| gateway.tls.enable | enable tcp gateway |
+| gateway.tls.servicePort | tcp gateway port |
+| gateway.tls.containerPort | tcp gateway container port |
+| gateway.tls.http2.enable | enable http2 gateway |
+| gateway.stream.enable | enable stream gateway |
+| gateway.stream.only | enable stream gateway only |
+| gateway.stream.tcp | enable stream gateway tcp |
+| gateway.stream.udp | enable stream gateway udp |
+
+## Apisix Config parameters
+
+| Parameter | Description |
+|--|--|
+| apisixConfig | Apisix config |
+
+## Apisix replicas configuration parameters
+
+| Parameter | Description |
+|--|--|
+| replicaCount | Number of apisix replicas to deploy |
+| resources.request.cpu | The request CPU limit |
+| resources.request.memory | The request memory limit |
+| resources.limits.cpu | The cpu resource limit |
+| resources.limits.memory | The memory resource limit |
+
+## Autoscaline parameters
+
+| Parameter | Description |
+|--|--|
+| autoscaline.enabled | enable autoscaline |
+| autoscaline.minReplicas | min replicas |
+| autoscaline.maxReplicas | max replicas |
+| autoscaline.targetCPUUtilizationPercentage | target cpu utilization percentage |
+| autoscaline.targetMemoryUtilizationPercentage | target memory utilization percentage |
+
+## Scheduling parameters
+
+| Parameter | Description |
+|--|--|
+| nodeSelector | Node labels for Apisix master pods assignment |
+| tolerations | Tolerations for Apisix; master pods assignment |
+| affinity | Affinity for Apisix pods assignment |
+
+## Apisix Dashboard parameters
+
+| Parameter | Description |
+|--|--|
+| apisix-dashboard.enabled | enable apisix-dashboard |
+
+## Apisix Ingress parameters
+
+| Parameter | Description |
+|--|--|
+| apisix-ingress-controller.enabled | enable apisix-ingress-controller |
+
+## Etcd parameters
+
+| Parameter | Description |
+|--|--|
+| etcd.enabled | enable etcd |
