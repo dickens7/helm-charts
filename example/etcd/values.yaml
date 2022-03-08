@@ -1,0 +1,15 @@
+replicaCount: 3
+fullnameOverride: "etcd"
+auth:
+  rbac:
+    enabled: false
+    rootPassword: root
+persistence:
+  size: 20Gi
+  # storageClass: alicloud-disk-essd
+autoCompactionMode: periodic
+autoCompactionRetention: 10m
+metrics:
+  enabled: true
+  podMonitor:
+    enabled: false
