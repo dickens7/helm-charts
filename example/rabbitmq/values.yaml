@@ -1,0 +1,25 @@
+replicaCount: 3
+# ingress:
+  # enabled: true
+  # annotations:
+    # cert-manager.io/cluster-issuer: your-cert-manager-name
+    # kubernetes.io/ingress.class: nginx
+  # hostname: goa-rabbitmq.dragonest.com
+  # tls: true
+  # tlsSecret: tls-secret-name
+persistence:
+  size: 20Gi
+  # storageClass: alicloud-disk-essd
+
+# For a faster resyncronization of the nodes, you can temporarily disable the readiness probe by setting readinessProbe.enabled=false.
+# Bear in mind that the pods will be exposed before they are actually ready to process requests.
+# readinessProbe: 
+  # enabled: false
+
+# This happens if the pod management policy of the statefulset is not Parallel and the last pod to be running wasn't the first pod of the statefulset.
+# If that happens, update the pod management policy to recover a healthy state
+# podManagementPolicy: Parallel
+
+auth:
+  password: WXdNZMQWGa
+  erlangCookie: kF69m5efTP7WEPvSqWXjl7xfSOV3XNM0
