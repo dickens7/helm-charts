@@ -1,0 +1,40 @@
+apisixConfig:
+  apisix:
+    stream_proxy:
+      tcp:
+        - 9100
+      upd:
+        - 9200
+    admin_key:
+      - name: admin
+        key: ccuOrnnKFvyF4aA9
+        role: admin
+
+apisix-dashboard:
+  ingress:
+    enabled: "true"
+    annotations:
+      kubernetes.io/ingress.class: apisix
+      # cert-manager.io/cluster-issuer: "letsencrypt"
+      # kubernetes.io/tls-acme: "true"
+      # k8s.apisix.apache.org/http-to-https: "true"
+      # k8s.apisix.apache.org/enable-cors: "true"
+    ingressClassName: apisix
+    hosts:
+    - host: apisix-dashboard.dickens7.com
+      paths:
+      - /
+
+apisix-ingress-controller:
+  config:
+    apisix:
+      adminKey: ccuOrnnKFvyF4aA9
+
+gateway:
+  type: LoadBalancer
+  tls:
+    enabled: true
+
+etcd:
+  enabled: true
+  replicaCount: 1
