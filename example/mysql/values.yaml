@@ -1,0 +1,11 @@
+image:
+  tag: 5.7
+
+auth:
+  rootPassword: root
+
+
+# primary: 
+#   service:
+#     type: NodePort
+#     nodePort: 30507
