@@ -29,6 +29,8 @@ apisix-ingress-controller:
   config:
     apisix:
       adminKey: ccuOrnnKFvyF4aA9
+    kubernetes:
+      apisixRouteVersion: apisix.apache.org/v2beta3
 
 gateway:
   type: LoadBalancer
