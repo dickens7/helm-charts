@@ -1,0 +1,75 @@
+server:
+  # 副本数量
+  replicaCount: 2
+  persistentVolume:
+    # 判断是否创建 pv
+    enabled: false
+    size: 10Gi
+    storageClass: monitoring-prometheus-nfs
+    accessModes:
+      - ReadWriteOnce
+# pushgateway 配置
+pushgateway:
+  # 副本数量
+  replicaCount: 2
+  persistentVolume:
+    # 判断是否创建 pv
+    enabled: false
+    size: 2Gi
+    storageClass: monitoring-pushgateway-nfs
+    accessModes:
+      - ReadWriteOnce
+# alertmanager 配置
+alertmanager:
+    # 副本数量
+  replicaCount: 2
+  persistentVolume:
+    # 判断是否创建 pv
+    enabled: false
+    size: 2Gi
+    storageClass: monitoring-alertmanager-nfs
+    accessModes:
+      - ReadWriteOnce
+# nodeExporter 配置
+nodeExporter:
+  tolerations:
+  # 当不指定key值时，表示容忍所有的污点key。这样 Kubernetes master 节点也可以监控
+  - operator: Exists
+
+# Prometheus 报警配置
+serverFiles:
+  alerting_rules.yml:
+    groups:
+    - name: 实例存活告警
+      rules:
+      - alert: 实例存活告警
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 1 minutes."
+# alertmanager 报警配置
+alertmanagerFiles:
+  alertmanager.yml:
+    # global:
+    #   smtp_smarthost: 'smtp.exmail.qq.com:465'
+    #   smtp_from: 'mail.com'
+    #   smtp_auth_username: 'mail.com'
+    #   smtp_auth_password: 'Y4Hq2Gu5Pu97G4PY'
+    #   smtp_require_tls: false
+    route:
+      group_by: ['alertname']
+      group_wait: 10s
+      group_interval: 10s
+      repeat_interval: 10m
+      receiver: live-monitoring
+    receivers:
+    - name: 'live-monitoring'
+      email_configs:
+      - to: 'mail.com'
+# nfs:
+#   PrometheusPath: /monitoring/prometheus
+#   PushgatewayPath: /monitoring/pushgateway
+#   PlertmanagerPath: /monitoring/alertmanager
+#   server: 192.168.8.251
