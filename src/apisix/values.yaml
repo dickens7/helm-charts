@@ -22,7 +22,7 @@
 image:
   repository: apache/apisix
   pullPolicy: IfNotPresent
-  tag: "2.12.1-alpine"
+  tag: "2.13.1-alpine"
   pullSecrets: []
 
 ## @param version The version of apisix to deploy

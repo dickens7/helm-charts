@@ -1,36 +1,42 @@
-# apisix-dashborad
+# Apisix Dashboard
 
-> Prerequisites
-> - Kubernetes cluster 1.18+
-> - Helm 3.1.0+
+## 安装
 
-## Quick Start
+使用 `helm` 安装
 
-- Install the chart
-
-```shell
-helm install <name> dickens7/apisix-dashboard . -n <namespace>
+```sh
+helm dependency update
+helm install -n apisix apisix-dashboard .
 ```
 
-- Configure the custom plug-in JSONSchema
+### 配置
 
-```shell
-helm install <name> dickens7/apisix-dashboard . -n <namespace> --set-file jsonschema=./jsonschema
+- schema 配置
+
+```yaml
+apisix:
+  ...
+  enable_control: true
+  control:
+    ip: "127.0.0.1"
+    port: 9090
 ```
 
-- Uninstallation
-
-```
-helm uninstall <name> -n <namespace> 
+```sh
+curl 127.0.0.1:9080/v1/shecma > schema.json
 ```
 
-## Configuration
+将 schema.json 放置到当前根目录中与values.yaml同级即可
 
-| Parameter | Description | | 
-|--|--|
-| Config |  |
-| config.etcd.endpoints | The etcd endpoints |
-| config.etcd.prefix | The etcd prefix |
-| config.etcd.username | The etcd username |
-| config.etcd.password | The etcd password |
-| config.jsonschema | Configure the custom plug-in JSONSchema |
+#### 参数
+
+| 参数名                            | 描述                                | 默认值                                                                               |
+| --------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
+| image.repository                  | 镜像仓库                            | `dickens7/apisix-dashboard`            |
+| image.tag                         | 镜像版本                            | `2.1`                                                                      |
+| image.pullPolicy                  | 镜像拉取策略                         | `Always`                                                                    |
+| image.pullSecrets                 | 镜像拉取时使用的 secret              | `null`                                                                       |
+| replicaCount                      | 副本数量                            | `1`                                                                        |
+| nodeSelector                      | 运行节点                            | `{}`                                                                                 |
+| resources                         | 资源限制                            | `{}`                                                                                 |
+| conf.etcd.endpoints               | ETCD host                          | `apisix-etcd:2379`     |
