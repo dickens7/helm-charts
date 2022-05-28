@@ -171,6 +171,6 @@ plugin_attr:
     export_uri: /apisix/prometheus/metrics
     enable_export_server: true
     export_addr:
-      ip: 0.0.0.0Even Better TOMLEven Better TOML
+      ip: 0.0.0.0
       port: 9091
 {{- end -}}
