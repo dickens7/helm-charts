@@ -211,8 +211,7 @@ etcd:
   fullnameOverride: "etcd"
   auth:
     rbac:
-      enabled: false
-      rootPassword: root
+      create: false
   persistence:
     size: 2Gi
   autoCompactionMode: periodic
