@@ -1,0 +1,63 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingress-apisix
+  labels:
+    name: ingress-apisix
+
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: apisix
+  namespace: ingress-apisix
+spec:
+  repo: https://dickens7.github.io/helm-charts/
+  chart: dickens7/apisix
+  targetNamespace: ingress-apisix
+  bootstrap: true
+  # set:
+  #   adminPassword: "NotVerySafePassword"
+  valuesContent: |-
+    apisixConfig:
+      apisix:
+        stream_proxy:
+          tcp:
+            - 9100
+          upd:
+            - 9200
+        admin_key:
+          - name: admin
+            key: ccuOrnnKFvyF4aA9
+            role: admin
+    apisix-dashboard:
+      ingress:
+        enabled: true
+        annotations:
+          # cert-manager.io/cluster-issuer: "letsencrypt"
+          # kubernetes.io/tls-acme: "true"
+          # k8s.apisix.apache.org/http-to-https: "true"
+          # k8s.apisix.apache.org/enable-cors: "true"
+        ingressClassName: apisix
+        hosts:
+        - host: apisix-dashboard.dickens.top
+          paths:
+          - /
+        tls:
+        - hosts:
+            - apisix-dashboard.dickens.top
+          secretName: apisix-dashboard-tls 
+    apisix-ingress-controller:
+      config:
+        apisix:
+          adminKey: ccuOrnnKFvyF4aA9
+        # kubernetes:
+          # apisixRouteVersion: apisix.apache.org/v2beta3
+          # ingressVersion: extensions/v1beta1
+    gateway:
+      type: ClusterIP
+      tls:
+        enabled: true
+    etcd:
+      enabled: true
+      replicaCount: 1
