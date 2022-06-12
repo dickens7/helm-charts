@@ -34,6 +34,7 @@ spec:
       ingress:
         enabled: true
         annotations:
+          kubernetes.io/ingress.class: apisix
           # cert-manager.io/cluster-issuer: "letsencrypt"
           # kubernetes.io/tls-acme: "true"
           # k8s.apisix.apache.org/http-to-https: "true"
@@ -55,7 +56,7 @@ spec:
           # apisixRouteVersion: apisix.apache.org/v2beta3
           # ingressVersion: extensions/v1beta1
     gateway:
-      type: ClusterIP
+      type: LoadBalancer
       tls:
         enabled: true
     etcd:
