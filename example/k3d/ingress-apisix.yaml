@@ -13,9 +13,9 @@ metadata:
   namespace: ingress-apisix
 spec:
   repo: https://dickens7.github.io/helm-charts/
-  chart: dickens7/apisix
+  chart: apisix
   targetNamespace: ingress-apisix
-  bootstrap: true
+  # bootstrap: true
   # set:
   #   adminPassword: "NotVerySafePassword"
   valuesContent: |-

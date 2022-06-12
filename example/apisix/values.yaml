@@ -15,26 +15,24 @@ apisix-dashboard:
     enabled: "true"
     annotations:
       kubernetes.io/ingress.class: apisix
-      cert-manager.io/cluster-issuer: "letsencrypt"
-      kubernetes.io/tls-acme: "true"
-      k8s.apisix.apache.org/http-to-https: "true"
+      # cert-manager.io/cluster-issuer: "letsencrypt"
+      # kubernetes.io/tls-acme: "true"
+      # k8s.apisix.apache.org/http-to-https: "true"
       # k8s.apisix.apache.org/enable-cors: "true"
     ingressClassName: apisix
     hosts:
     - host: apisix-dashboard.dickens.top
       paths:
       - /
-    tls:
-    - hosts:
-        - apisix-dashboard.dickens.top # placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
-      secretName: apisix-dashboard-tls 
+    # tls:
+    # - hosts:
+    #     - apisix-dashboard.dickens.top # placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
+    #   secretName: apisix-dashboard-tls 
 
 apisix-ingress-controller:
   config:
     apisix:
       adminKey: ccuOrnnKFvyF4aA9
-    kubernetes:
-      apisixRouteVersion: apisix.apache.org/v2beta3
 
 gateway:
   type: LoadBalancer
