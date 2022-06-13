@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: sky
+  labels:
+    name: sky
+
+---
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: skywalking
+  namespace: sky
+spec:
+  repo: https://apache.jfrog.io/artifactory/skywalking-helm
+  chart: skywalking
+  targetNamespace: sky
+  bootstrap: false
+  # set:
+  #   adminPassword: "NotVerySafePassword"
+  valuesContent: |-
+    oap:
+      image:
+        tag: 9.1.0
+      storageType: elasticsearch
+    ui:
+      image:
+        tag: 9.1.0
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: apisix
+        hosts:
+          - skywalking.dickens.top
+    elasticsearch:
+      enabled: false
+      config:               # For users of an existing elasticsearch cluster,takes effect when `elasticsearch.enabled` is false
+        host: elasticsearch-master-headless.elk
+        port:
+          http: 9200
