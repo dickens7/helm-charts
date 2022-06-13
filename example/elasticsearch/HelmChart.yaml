@@ -13,7 +13,7 @@ metadata:
   namespace: elk
 spec:
   repo: https://helm.elastic.co
-  chart: elastic/elasticsearch
+  chart: elasticsearch
   targetNamespace: elk
   bootstrap: false
   # set:

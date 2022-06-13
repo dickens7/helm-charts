@@ -14,12 +14,23 @@ k3d cluster create foo --agents 1 \
 
 
 
-  docker exec -it k3d-testcluster-agent-0 mount bpffs /sys/fs/bpf -t bpf
-  docker exec -it k3d-testcluster-agent-0 mount --make-shared /sys/fs/bpf
-  docker exec -it k3d-testcluster-agent-0 mkdir -p /run/cilium/cgroupv2
-  docker exec -it k3d-testcluster-agent-0 mount none /run/cilium/cgroupv2 -t cgroup2
-  docker exec -it k3d-testcluster-agent-0 mount --make-shared /run/cilium/cgroupv2/
+docker exec -it k3d-testcluster-server-0 mount bpffs /sys/fs/bpf -t bpf
+docker exec -it k3d-testcluster-server-0 mount --make-shared /sys/fs/bpf
+docker exec -it k3d-testcluster-server-0 mkdir -p /run/cilium/cgroupv2
+docker exec -it k3d-testcluster-server-0 mount none /run/cilium/cgroupv2 -t cgroup2
+docker exec -it k3d-testcluster-server-0 mount --make-shared /run/cilium/cgroupv2/
 
+docker exec -it k3d-testcluster-server-1 mount bpffs /sys/fs/bpf -t bpf
+docker exec -it k3d-testcluster-server-1 mount --make-shared /sys/fs/bpf
+docker exec -it k3d-testcluster-server-1 mkdir -p /run/cilium/cgroupv2
+docker exec -it k3d-testcluster-server-1 mount none /run/cilium/cgroupv2 -t cgroup2
+docker exec -it k3d-testcluster-server-1 mount --make-shared /run/cilium/cgroupv2/
+
+docker exec -it k3d-testcluster-server-2 mount bpffs /sys/fs/bpf -t bpf
+docker exec -it k3d-testcluster-server-2 mount --make-shared /sys/fs/bpf
+docker exec -it k3d-testcluster-server-2 mkdir -p /run/cilium/cgroupv2
+docker exec -it k3d-testcluster-server-2 mount none /run/cilium/cgroupv2 -t cgroup2
+docker exec -it k3d-testcluster-server-2 mount --make-shared /run/cilium/cgroupv2/
 
  mount bpffs /sys/fs/bpf -t bpf && mount --make-shared /sys/fs/bpf && mkdir -p /run/cilium/cgroupv2
  

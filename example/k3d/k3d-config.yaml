@@ -17,12 +17,12 @@ volumes: # repeatable flags are represented as YAML lists
   - volume: /home/seven/code/github.com/dickens7/helm-charts/example/k3d/cilium.yaml:/var/lib/rancher/k3s/server/manifests/cilium.yaml # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
     nodeFilters:
       - server:0
-  # - volume: /home/seven/code/github.com/dickens7/helm-charts/example/k3d/cert-manager.yaml:/var/lib/rancher/k3s/server/manifests/cert-manager.yaml # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
-  #   nodeFilters:
-  #     - server:*
-  # - volume: /home/seven/code/github.com/dickens7/helm-charts/example/k3d/ingress-apisix.yaml:/var/lib/rancher/k3s/server/manifests/ingress-apisix.yaml # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
-  #   nodeFilters:
-  #     - server:*
+  - volume: /home/seven/code/github.com/dickens7/helm-charts/example/k3d/cert-manager.yaml:/var/lib/rancher/k3s/server/manifests/cert-manager.yaml # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
+    nodeFilters:
+      - server:*
+  - volume: /home/seven/code/github.com/dickens7/helm-charts/example/k3d/ingress-apisix.yaml:/var/lib/rancher/k3s/server/manifests/ingress-apisix.yaml # same as `--volume '/my/host/path:/path/in/node@server:0;agent:*'`
+    nodeFilters:
+      - server:*
   # - volume: /sys/fs/bpf:/sys/fs/bpf:shared
   #   nodeFilters:
   #     - server:*
