@@ -23,6 +23,7 @@ spec:
       image:
         tag: 9.1.0
       storageType: elasticsearch
+      javaOpts: -Xmx512m -Xms512m
     ui:
       image:
         tag: 9.1.0
@@ -32,6 +33,10 @@ spec:
           kubernetes.io/ingress.class: apisix
         hosts:
           - skywalking.dickens.top
+    satellite:
+      enabled: true
+      image:
+        tag: v1.0.0
     elasticsearch:
       enabled: false
       config:               # For users of an existing elasticsearch cluster,takes effect when `elasticsearch.enabled` is false
