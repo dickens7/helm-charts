@@ -4,7 +4,7 @@
 
 ```bash
 helm repo add bitnami https://charts.bitnami.com/bitnami
-helm install etcd bitnami/etcd -f values.yaml --version 8.1.1
+helm install etcd bitnami/etcd -f values.yaml --version 8.2.3
 ```
 
 ## 水平扩缩容
