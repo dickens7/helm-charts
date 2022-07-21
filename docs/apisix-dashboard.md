@@ -32,8 +32,8 @@ curl 127.0.0.1:9080/v1/shecma > schema.json
 
 | 参数名                            | 描述                                | 默认值                                                                               |
 | --------------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------ |
-| image.repository                  | 镜像仓库                            | `dickens7/apisix-dashboard`            |
-| image.tag                         | 镜像版本                            | `2.1`                                                                      |
+| image.repository                  | 镜像仓库                            | `apache/apisix-dashboard`            |
+| image.tag                         | 镜像版本                            | `2.13`                                                                      |
 | image.pullPolicy                  | 镜像拉取策略                         | `Always`                                                                    |
 | image.pullSecrets                 | 镜像拉取时使用的 secret              | `null`                                                                       |
 | replicaCount                      | 副本数量                            | `1`                                                                        |
