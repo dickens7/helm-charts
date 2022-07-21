@@ -1,8 +1,0 @@
-{
-    "yaml.schemas": {
-        "https://raw.githubusercontent.com/rancher/k3d/main/pkg/config/config.versions.schema.json": [
-            "file:///home/dickens7/github.com/dickens7/helm-charts/example/k3d/k3d-config.yaml",
-            "file:///home/seven/code/github.com/dickens7/helm-charts/example/k3d/k3d-config.yaml"
-        ]
-    }
-}
