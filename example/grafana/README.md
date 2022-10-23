@@ -11,3 +11,5 @@ helm install grafana grafana/grafana -f values.yaml --version 6.42.3
 
 - 8919
 - 10856
+- <https://grafana.com/grafana/dashboards/13865-fgc-nginx01-web-analytics/>
+- <https://grafana.com/grafana/dashboards/11719-apache-apisix/>
