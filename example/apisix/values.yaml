@@ -9,6 +9,16 @@ apisixConfig:
       - name: admin
         key: ccuOrnnKFvyF4aA9
         role: admin
+  nginx_config:
+    http:
+      enable_access_log: true # enable access log or not, default true
+      # access_log: logs/access.log
+      access_log_format: '{"remote_addr":"$remote_addr","remote_user":"$remote_user","time_local":"$time_local","http_host":"$http_host","request":"$request","status":"$status","body_bytes_sent":"$body_bytes_sent","request_time":"$request_time","http_referer":"$http_referer","http_user_agent":"$http_user_agent","upstream_addr":"$upstream_addr","upstream_status":"$upstream_status","upstream_response_time":"$upstream_response_time","request_uri":"$request_uri","request_method":"$request_method","url":"$upstream_scheme://$upstream_host$upstream_uri"}'
+      access_log_format_escape: json # allows setting json or default characters escaping in variables
+
+podMonitor:
+  enabled: true
+  # namespace: monitoring
 
 apisix-dashboard:
   ingress:
@@ -21,18 +31,22 @@ apisix-dashboard:
       # k8s.apisix.apache.org/enable-cors: "true"
     ingressClassName: apisix
     hosts:
-    - host: apisix-dashboard.dickens.top
-      paths:
-      - /
+      - host: apisix-dashboard.dickens.top
+        paths:
+          - /
     # tls:
     # - hosts:
     #     - apisix-dashboard.dickens.top # placing a host in the TLS config will determine what ends up in the cert's subjectAltNames
-    #   secretName: apisix-dashboard-tls 
+    #   secretName: apisix-dashboard-tls
 
 apisix-ingress-controller:
   config:
     apisix:
       adminKey: ccuOrnnKFvyF4aA9
+    ingressPublishService: "ingress-apisix/apisix"
+    kubernetes:
+      namespaceSelector:
+        - apisix.ingress=watching
 
 gateway:
   type: LoadBalancer
@@ -42,3 +56,20 @@ gateway:
 etcd:
   enabled: true
   replicaCount: 1
+  metrics:
+    podMonitor:
+      enabled: true
+      namespace: ingress-apisix # default monitoring
+    prometheusRule:
+      enabled: true
+      # namespace: monitoring
+      role:
+        - alert: EtcdClusterUnavailable
+          annotations:
+            summary: etcd cluster small
+            description: If one more etcd peer goes down the cluster will be unavailable
+          expr: |
+            count(up{job="etcd"} == 0) > (count(up{job="etcd"}) / 2 - 1)
+          for: 3m
+          labels:
+            severity: critical

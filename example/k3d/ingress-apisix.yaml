@@ -30,15 +30,15 @@ spec:
           - name: admin
             key: ccuOrnnKFvyF4aA9
             role: admin
-      plugin_attr:
-        skywalking:
-          endpoint_addr: http://skywalking-oap.sky:12800
+      # plugin_attr:
+      #   skywalking:
+      #     endpoint_addr: http://skywalking-oap.sky:12800
       plugins:                          # plugin list (sorted by priority)
         - real-ip                        # priority: 23000
         - client-control                 # priority: 22000
         - proxy-control                  # priority: 21990
         - zipkin                         # priority: 12011
-        - skywalking                    # priority: 12010
+        # - skywalking                    # priority: 12010
         #- opentelemetry                 # priority: 12009
         - ext-plugin-pre-req             # priority: 12000
         - request-id                     # priority: 11010
@@ -89,7 +89,7 @@ spec:
         - loggly                         # priority: 411
         - http-logger                    # priority: 410
         - splunk-hec-logging             # priority: 409
-        - skywalking-logger              # priority: 408
+        # - skywalking-logger              # priority: 408
         - google-cloud-logging           # priority: 407
         - sls-logger                     # priority: 406
         - tcp-logger                     # priority: 405

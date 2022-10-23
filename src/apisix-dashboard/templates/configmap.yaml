@@ -21,6 +21,13 @@ data:
         {{- toYaml .Values.config.etcd | nindent 8 }}
       log:
         {{- toYaml .Values.config.log | nindent 8 }}
+      security:
+        # access_control_allow_origin: "http://httpbin.org"
+        access_control_allow_credentials: true
+        access_control_allow_headers: "Authorization"
+        access_control-allow_methods: "*"
+        x_frame_options: "allow-from *"
+        content_security_policy: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; frame-src *"
     authentication:
       secret:
         {{ randAlphaNum 20 }}

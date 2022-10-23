@@ -4,7 +4,7 @@
 
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
-helm install grafana grafana/grafana -f values.yaml --version 6.24.1
+helm install grafana grafana/grafana -f values.yaml --version 6.42.3
 ```
 
 ## Import Dashboard

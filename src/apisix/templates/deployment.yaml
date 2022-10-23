@@ -58,6 +58,11 @@ spec:
             - name: tls
               containerPort: {{ .Values.gateway.tls.containerPort }}
               protocol: TCP
+            {{- if .Values.podMonitor.enabled }}
+            - name: prometheus
+              containerPort: {{ .Values.podMonitor.containerPort }}
+              protocol: TCP
+            {{- end }}
           readinessProbe:
             failureThreshold: 6
             initialDelaySeconds: 10

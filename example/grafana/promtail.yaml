@@ -1,0 +1,4 @@
+config:
+  logLevel: warn
+  clients:
+    - url: http://loki-distributed-gateway/loki/api/v1/push

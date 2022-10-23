@@ -1,0 +1,89 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus-cluster
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: prometheus-cluster
+rules:
+  - apiGroups: [""]
+    resources:
+      - nodes
+      - nodes/metrics
+      - services
+      - endpoints
+      - pods
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources:
+      - configmaps
+    verbs: ["get"]
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+    verbs: ["get", "list", "watch"]
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus-cluster
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-cluster
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-cluster
+    namespace: monitoring
+
+---
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus-cluster
+spec:
+  serviceAccountName: prometheus-cluster
+  serviceMonitorNamespaceSelector: {}
+  serviceMonitorSelector: {}
+  ruleNamespaceSelector: {}
+  ruleSelector: {}
+  podMonitorNamespaceSelector: {}
+  podMonitorSelector: {}
+  probeNamespaceSelector: {}
+  probeSelector: {}
+
+  # serviceMonitorNamespaceSelector: {} # {} is all namespace
+  # # serviceMonitorNamespaceSelector:
+  # #   matchLabels:
+  # #     prometheus-cluster/serviceMonitor: "true"
+  # serviceMonitorSelector:
+  #   matchLabels:
+  #     # group: cluster
+  #     app.kubernetes.io/instance: apisix
+  # # podMonitorNamespaceSelector: {}
+  # podMonitorSelector:
+  #   matchLabels:
+  #     # group: cluster
+  #     app.kubernetes.io/instance: apisix
+  # ruleSelector:
+  #   matchLabels:
+  #     # group: cluster
+  #     app.kubernetes.io/instance: apisix
+  # alerting:
+  #   alertmanagers:
+  #     - name: alertmanager-cluster # 定义该 Prometheus 对接的 Alertmanager 集群的名字, 在 default 这个 namespace 中
+  #       namespace: monitoring
+  #       pathPrefix: /
+  #       port: web
+  resources:
+    requests:
+      memory: 400Mi
+  # enableAdminAPI: false
+  enableAdminAPI: true

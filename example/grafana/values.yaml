@@ -12,16 +12,17 @@ ingress:
   enabled: true
   annotations:
     kubernetes.io/ingress.class: apisix
-    cert-manager.io/cluster-issuer: "letsencrypt"
-    kubernetes.io/tls-acme: "true"
-    k8s.apisix.apache.org/http-to-https: "true"
+    k8s.apisix.apache.org/enable-websocket: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt"
+    # kubernetes.io/tls-acme: "true"
+    # k8s.apisix.apache.org/http-to-https: "true"
   hosts:
     - "grafana.dickens.top"
   path: "/"
-  tls: 
-    - secretName: grafana-dickens-top-tls
-      hosts:
-        - grafana.dickens.top
+  # tls: 
+  #   - secretName: grafana-dickens-top-tls
+  #     hosts:
+  #       - grafana.dickens.top
 # PVC
 persistence:
   enabled: true
