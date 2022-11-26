@@ -49,7 +49,6 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
-
 ## @section Gateway parameters
 ## @param gateway.type apisix replicas service type
 
@@ -58,7 +57,6 @@ gateway:
   type: LoadBalancer
   # annotations:
   #   service.beta.kubernetes.io/aws-load-balancer-type: nlb
-
 
   ## @param gateway.http.enable enable http gateway
   ## @param gateway.http.servicePort http gateway port
@@ -85,8 +83,9 @@ gateway:
   tls:
     enabled: false
     servicePort: 443
-    containerPort: 9443
-     #nodePort: 39443
+    containerPort:
+      9443
+      #nodePort: 39443
     http2:
       enabled: true
 
@@ -123,10 +122,10 @@ apisixConfig:
     worker_processes: "1"
     http:
       access_log: /dev/stdout
-  # wasm:                                                                                   
-  #   plugins:                                                                              
-  #     - name: http_wasm_filter                                                            
-  #       priority: 7997                                                                    
+  # wasm:
+  #   plugins:
+  #     - name: http_wasm_filter
+  #       priority: 7997
   #       file: /tmp/http_wasm_filter.wasm
 
 ## @section Apisix replicas configuration parameters
@@ -196,7 +195,7 @@ podMonitor:
 
 ## @section Apisix Dashboard parameters
 ## @param apisix-dashboard.enabled enable apisix-dashboard
-## ref: 
+## ref:
 apisix-dashboard:
   enabled: true
   fullnameOverride: "apisix-dashboard"
