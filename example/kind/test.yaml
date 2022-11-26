@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress-v1beta1
+  annotations:
+    kubernetes.io/ingress.class: apisix
+    k8s.apisix.apache.org/upstream-protocol: grpcs
+spec:
+  rules:
+  - host: e2e.apisix.local
+    http:
+      paths:
+      - path: /helloworld.Greeter/SayHello
+        pathType: ImplementationSpecific
+        backend:
+          serviceName: test-backend-service-e2e-test
+          servicePort: 50053

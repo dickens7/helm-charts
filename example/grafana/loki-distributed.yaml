@@ -1,15 +1,29 @@
-ingress:
-  enabled: true
-  ingressClassName: apisix
-  annotations:
-    {}
-    # cert-manager.io/cluster-issuer: "letsencrypt"
-    # kubernetes.io/tls-acme: "true"
-    # k8s.apisix.apache.org/http-to-https: "true"
-    # k8s.apisix.apache.org/enable-cors: "true"
-  hosts:
-    - loki.dickens.top
+# gateway:
+#   ingress:
+#     enabled: true
+#     ingressClassName: apisix
+#     annotations:
+#       {}
+#       # cert-manager.io/cluster-issuer: "letsencrypt"
+#       # kubernetes.io/tls-acme: "true"
+#       # k8s.apisix.apache.org/http-to-https: "true"
+#       # k8s.apisix.apache.org/enable-cors: "true"
+#     hosts:
+#       - loki.dickens.top
 #  tls:
 #    - hosts:
 #       - loki.dickens.top
 #      secretName: loki-distributed-tls
+
+gateway:
+  ingress:
+    enabled: true
+    # Newly added optional property
+    ingressClassName: apisix
+    hosts:
+      - host: loki.dickens.top
+        paths:
+          # New data structure introduced
+          - path: /
+            # Newly added optional property
+            pathType: Prefix

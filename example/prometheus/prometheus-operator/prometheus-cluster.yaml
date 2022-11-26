@@ -84,6 +84,6 @@ spec:
   #       port: web
   resources:
     requests:
-      memory: 400Mi
+      memory: 100Mi
   # enableAdminAPI: false
   enableAdminAPI: true

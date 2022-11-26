@@ -1,3 +1,23 @@
+ui:
+  image:
+    tag: 9.2.0
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: apisix
+      # kubernetes.io/tls-acme: "true"
+    path: /
+    hosts:
+      - skywalking.dickens.top
+    tls: []
+    #  - secretName: skywalking-tls
+    #    hosts:
+    #      - skywalking.local
+oap:
+  storageType: elasticsearch
+  image:
+    tag: 9.2.0
+
 antiAffinity: "soft"
 
 # Shrink default JVM heap.
@@ -19,3 +39,12 @@ volumeClaimTemplate:
   resources:
     requests:
       storage: 2Gi
+
+elasticsearch:
+  enabled: false
+  config: # For users of an existing elasticsearch cluster,takes effect when `elasticsearch.enabled` is false
+    host: elasticsearch-master-headless
+    port:
+      http: 9200
+    # user: "xxx" # [optional]
+    # password: "xxx" # [optional]

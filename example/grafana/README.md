@@ -4,7 +4,10 @@
 
 ```bash
 helm repo add grafana https://grafana.github.io/helm-charts
-helm install grafana grafana/grafana -f values.yaml --version 6.42.3
+helm install grafana grafana/grafana -f values.yaml --version 6.43.5
+
+helm upgrade --install loki-distributed grafana/loki-distributed -f loki-distributed.yaml
+helm upgrade --install promtail grafana/promtail -f promtail.yaml
 ```
 
 ## Import Dashboard
