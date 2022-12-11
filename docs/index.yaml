@@ -3,7 +3,7 @@ entries:
   apisix:
   - apiVersion: v2
     appVersion: 2.13.3
-    created: "2022-11-26T21:50:08.567995233+08:00"
+    created: "2022-12-11T10:07:44.239679357+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -16,9 +16,9 @@ entries:
     - condition: apisix-ingress-controller.enabled
       name: apisix-ingress-controller
       repository: https://charts.apiseven.com
-      version: 0.10.1
+      version: 0.10.2
     description: A Helm chart for apisix
-    digest: 69413484d5d5e797e0267f94f3485939f3a3523aea59f0b80b3da930e45bcaf3
+    digest: 58df181a6db43cb9cba49b1506bfb3323b1989812ec6f41e0f0f2c82beb2f107
     name: apisix
     type: application
     urls:
@@ -26,7 +26,7 @@ entries:
     version: 2.13.3
   - apiVersion: v2
     appVersion: 2.13.2
-    created: "2022-11-26T21:50:08.565410114+08:00"
+    created: "2022-12-11T10:07:44.236328395+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -49,7 +49,7 @@ entries:
     version: 2.13.2
   - apiVersion: v2
     appVersion: 2.13.1
-    created: "2022-11-26T21:50:08.562756347+08:00"
+    created: "2022-12-11T10:07:44.233300689+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -72,7 +72,7 @@ entries:
     version: 2.13.1
   - apiVersion: v2
     appVersion: 2.12.2
-    created: "2022-11-26T21:50:08.55924434+08:00"
+    created: "2022-12-11T10:07:44.229517065+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -95,7 +95,7 @@ entries:
     version: 2.12.1
   - apiVersion: v2
     appVersion: 2.12.1
-    created: "2022-11-26T21:50:08.556544808+08:00"
+    created: "2022-12-11T10:07:44.226844436+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -118,7 +118,7 @@ entries:
     version: 2.12.0
   - apiVersion: v2
     appVersion: 2.11.0
-    created: "2022-11-26T21:50:08.553791486+08:00"
+    created: "2022-12-11T10:07:44.223918684+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -141,7 +141,7 @@ entries:
     version: 2.11.1
   - apiVersion: v2
     appVersion: 2.10.2
-    created: "2022-11-26T21:50:08.551034967+08:00"
+    created: "2022-12-11T10:07:44.220114728+08:00"
     dependencies:
     - condition: etcd.enabled
       name: etcd
@@ -165,7 +165,7 @@ entries:
   apisix-dashboard:
   - apiVersion: v2
     appVersion: 2.13.1
-    created: "2022-11-26T21:50:08.569482586+08:00"
+    created: "2022-12-11T10:07:44.24155688+08:00"
     description: A Helm chart for Kubernetes
     digest: 5a88441a4c50d4cb278685af67a5f1bd1e99733780d9aa0fc9c2755b74c00f47
     name: apisix-dashboard
@@ -175,7 +175,7 @@ entries:
     version: 2.13.1
   - apiVersion: v2
     appVersion: 2.13.0
-    created: "2022-11-26T21:50:08.569226007+08:00"
+    created: "2022-12-11T10:07:44.241128787+08:00"
     description: A Helm chart for Kubernetes
     digest: 6078c0817d62cea5d39c6eb0a63afdda1ebd00f04cd5cf6522efe68cb0c04c6c
     name: apisix-dashboard
@@ -185,7 +185,7 @@ entries:
     version: 2.13.0
   - apiVersion: v2
     appVersion: 2.11.0
-    created: "2022-11-26T21:50:08.568461022+08:00"
+    created: "2022-12-11T10:07:44.240670729+08:00"
     description: A Helm chart for Kubernetes
     digest: 69df8a0c6d3a2a5b451c7870cc9b606711757f3e488ae36445e8918fe0e1ecb3
     name: apisix-dashboard
@@ -195,7 +195,7 @@ entries:
     version: 2.11.0
   - apiVersion: v2
     appVersion: 2.10.1
-    created: "2022-11-26T21:50:08.56822927+08:00"
+    created: "2022-12-11T10:07:44.240189388+08:00"
     description: A Helm chart for Kubernetes
     digest: 82d75b0ee544d64d74562b400b71743cba311a2804f859d4ae028211adf7eb99
     name: apisix-dashboard
@@ -205,7 +205,7 @@ entries:
     version: 2.10.2
   - apiVersion: v2
     appVersion: 2.9.0
-    created: "2022-11-26T21:50:08.569737932+08:00"
+    created: "2022-12-11T10:07:44.241916901+08:00"
     description: A Helm chart for Kubernetes
     digest: 6cabb9c6e8bfceac5fa7fedc3b52d69a1d48bd9972ccf34dc5669260f9fcc6f4
     name: apisix-dashboard
@@ -216,7 +216,7 @@ entries:
   static:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-26T21:50:08.569952872+08:00"
+    created: "2022-12-11T10:07:44.2424213+08:00"
     description: A Helm chart for Kubernetes
     digest: 7ad319d024b41d40afbf88119e99b79d9ac5fe5a3299bee559c5d17c721dd6ce
     name: static
@@ -227,7 +227,7 @@ entries:
   xhgui:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2022-11-26T21:50:08.572496474+08:00"
+    created: "2022-12-11T10:07:44.245133693+08:00"
     dependencies:
     - condition: mongodb.enabled
       name: mongodb
@@ -240,4 +240,4 @@ entries:
     urls:
     - https://dickens7.github.io/helm-charts/xhgui-0.1.0.tgz
     version: 0.1.0
-generated: "2022-11-26T21:50:08.548231161+08:00"
+generated: "2022-12-11T10:07:44.217004564+08:00"
