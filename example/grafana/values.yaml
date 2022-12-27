@@ -16,7 +16,7 @@ ingress:
     # cert-manager.io/cluster-issuer: "letsencrypt"
     # kubernetes.io/tls-acme: "true"
     # k8s.apisix.apache.org/http-to-https: "true"
-  hosts:
+  hosts: 
     - "grafana.dickens.top"
   path: "/"
   # tls: 

@@ -1,0 +1,1072 @@
+COMPUTED VALUES:
+enterprise:
+  adminApi:
+    enabled: true
+  adminTokenSecret: null
+  canarySecret: null
+  cluster_name: null
+  config: |
+    {{- if .Values.enterprise.adminApi.enabled }}
+    {{- if or .Values.minio.enabled (eq .Values.loki.storage.type "s3") (eq .Values.loki.storage.type "gcs") (eq .Values.loki.storage.type "azure") }}
+    admin_client:
+      storage:
+        s3:
+          bucket_name: {{ .Values.loki.storage.bucketNames.admin }}
+    {{- end }}
+    {{- end }}
+    auth:
+      type: {{ .Values.enterprise.adminApi.enabled | ternary "enterprise" "trust" }}
+    auth_enabled: {{ .Values.loki.auth_enabled }}
+    cluster_name: {{ include "loki.clusterName" . }}
+    license:
+      path: /etc/loki/license/license.jwt
+  enabled: false
+  externalConfigName: ""
+  externalLicenseName: null
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: grafana/enterprise-logs
+  license:
+    contents: NOTAVALIDLICENSE
+  nginxConfig:
+    file: |
+      worker_processes  5;  ## Default: 1
+      error_log  /dev/stderr;
+      pid        /tmp/nginx.pid;
+      worker_rlimit_nofile 8192;
+
+      events {
+        worker_connections  4096;  ## Default: 1024
+      }
+
+      http {
+        client_body_temp_path /tmp/client_temp;
+        proxy_temp_path       /tmp/proxy_temp_path;
+        fastcgi_temp_path     /tmp/fastcgi_temp;
+        uwsgi_temp_path       /tmp/uwsgi_temp;
+        scgi_temp_path        /tmp/scgi_temp;
+
+        proxy_http_version    1.1;
+
+        default_type application/octet-stream;
+        log_format   {{ .Values.gateway.nginxConfig.logFormat }}
+
+        {{- if .Values.gateway.verboseLogging }}
+        access_log   /dev/stderr  main;
+        {{- else }}
+
+        map $status $loggable {
+          ~^[23]  0;
+          default 1;
+        }
+        access_log   /dev/stderr  main  if=$loggable;
+        {{- end }}
+
+        sendfile     on;
+        tcp_nopush   on;
+        resolver {{ .Values.global.dnsService }}.{{ .Values.global.dnsNamespace }}.svc.{{ .Values.global.clusterDomain }}.;
+
+        {{- with .Values.gateway.nginxConfig.httpSnippet }}
+        {{ . | nindent 2 }}
+        {{- end }}
+
+        server {
+          listen             8080;
+
+          {{- if .Values.gateway.basicAuth.enabled }}
+          auth_basic           "Loki";
+          auth_basic_user_file /etc/nginx/secrets/.htpasswd;
+          {{- end }}
+
+          location = / {
+            return 200 'OK';
+            auth_basic off;
+          }
+
+          location = /api/prom/push {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /api/prom/tail {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+          }
+
+          location ~ /api/prom/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /prometheus/api/v1/alerts.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /prometheus/api/v1/rules.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /loki/api/v1/push {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /loki/api/v1/tail {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+          }
+
+          location ~ /loki/api/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /admin/api/.* {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /compactor/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /distributor/.* {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /ring {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /ingester/.* {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /ruler/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /scheduler/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          {{- with .Values.gateway.nginxConfig.serverSnippet }}
+          {{ . | nindent 4 }}
+          {{- end }}
+        }
+      }
+  provisioner:
+    annotations: {}
+    enabled: true
+    env: []
+    extraVolumeMounts: []
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: grafana/enterprise-logs-provisioner
+      tag: null
+    labels: {}
+    priorityClassName: null
+    provisionedSecretPrefix: '{{ include "loki.name" . }}-provisioned'
+    securityContext:
+      fsGroup: 10001
+      runAsGroup: 10001
+      runAsNonRoot: true
+      runAsUser: 10001
+    tenants: []
+  tokengen:
+    annotations: {}
+    enabled: true
+    env: []
+    extraArgs: []
+    extraEnvFrom: []
+    extraVolumeMounts: []
+    extraVolumes: []
+    labels: {}
+    priorityClassName: ""
+    securityContext:
+      fsGroup: 10001
+      runAsGroup: 10001
+      runAsNonRoot: true
+      runAsUser: 10001
+    targetModule: tokengen
+    tolerations: []
+  useExternalLicense: false
+  version: v1.6.0
+fullnameOverride: null
+gateway:
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "loki.gatewaySelectorLabels" . | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+  autoscaling:
+    enabled: false
+    maxReplicas: 3
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: null
+  basicAuth:
+    enabled: false
+    existingSecret: null
+    htpasswd: '{{ htpasswd (required "''gateway.basicAuth.username'' is required"
+      .Values.gateway.basicAuth.username) (required "''gateway.basicAuth.password''
+      is required" .Values.gateway.basicAuth.password) }}'
+    password: null
+    username: null
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+  deploymentStrategy:
+    type: RollingUpdate
+  enabled: true
+  extraArgs: []
+  extraEnv: []
+  extraEnvFrom: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: nginxinc/nginx-unprivileged
+    tag: 1.19-alpine
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: gateway.loki.example.com
+      paths:
+      - path: /
+    ingressClassName: ""
+    tls:
+    - hosts:
+      - gateway.loki.example.com
+      secretName: loki-gateway-tls
+  nginxConfig:
+    file: |
+      worker_processes  5;  ## Default: 1
+      error_log  /dev/stderr;
+      pid        /tmp/nginx.pid;
+      worker_rlimit_nofile 8192;
+
+      events {
+        worker_connections  4096;  ## Default: 1024
+      }
+
+      http {
+        client_body_temp_path /tmp/client_temp;
+        proxy_temp_path       /tmp/proxy_temp_path;
+        fastcgi_temp_path     /tmp/fastcgi_temp;
+        uwsgi_temp_path       /tmp/uwsgi_temp;
+        scgi_temp_path        /tmp/scgi_temp;
+
+        proxy_http_version    1.1;
+
+        default_type application/octet-stream;
+        log_format   {{ .Values.gateway.nginxConfig.logFormat }}
+
+        {{- if .Values.gateway.verboseLogging }}
+        access_log   /dev/stderr  main;
+        {{- else }}
+
+        map $status $loggable {
+          ~^[23]  0;
+          default 1;
+        }
+        access_log   /dev/stderr  main  if=$loggable;
+        {{- end }}
+
+        sendfile     on;
+        tcp_nopush   on;
+        resolver {{ .Values.global.dnsService }}.{{ .Values.global.dnsNamespace }}.svc.{{ .Values.global.clusterDomain }}.;
+
+        {{- with .Values.gateway.nginxConfig.httpSnippet }}
+        {{ . | nindent 2 }}
+        {{- end }}
+
+        server {
+          listen             8080;
+
+          {{- if .Values.gateway.basicAuth.enabled }}
+          auth_basic           "Loki";
+          auth_basic_user_file /etc/nginx/secrets/.htpasswd;
+          {{- end }}
+
+          location = / {
+            return 200 'OK';
+            auth_basic off;
+          }
+
+          location = /api/prom/push {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /api/prom/tail {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+          }
+
+          location ~ /api/prom/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /prometheus/api/v1/alerts.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location ~ /prometheus/api/v1/rules.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /loki/api/v1/push {
+            proxy_pass       http://{{ include "loki.writeFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          location = /loki/api/v1/tail {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+          }
+
+          location ~ /loki/api/.* {
+            proxy_pass       http://{{ include "loki.readFullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.global.clusterDomain }}:3100$request_uri;
+          }
+
+          {{- with .Values.gateway.nginxConfig.serverSnippet }}
+          {{ . | nindent 4 }}
+          {{- end }}
+        }
+      }
+    httpSnippet: ""
+    logFormat: |-
+      main '$remote_addr - $remote_user [$time_local]  $status '
+              '"$request" $body_bytes_sent "$http_referer" '
+              '"$http_user_agent" "$http_x_forwarded_for"';
+    serverSnippet: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext:
+    fsGroup: 101
+    runAsGroup: 101
+    runAsNonRoot: true
+    runAsUser: 101
+  priorityClassName: null
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+    initialDelaySeconds: 15
+    timeoutSeconds: 1
+  replicas: 1
+  resources: {}
+  service:
+    annotations: {}
+    clusterIP: null
+    labels: {}
+    loadBalancerIP: null
+    nodePort: null
+    port: 80
+    type: ClusterIP
+  terminationGracePeriodSeconds: 30
+  tolerations: []
+  verboseLogging: true
+global:
+  clusterDomain: cluster.local
+  dnsNamespace: kube-system
+  dnsService: kube-dns
+  image:
+    registry: null
+  priorityClassName: null
+grafana-agent-operator:
+  affinity: {}
+  annotations: {}
+  extraArgs: []
+  fullnameOverride: ""
+  global:
+    clusterDomain: cluster.local
+    dnsNamespace: kube-system
+    dnsService: kube-dns
+    image: {}
+    priorityClassName: null
+  image:
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+    registry: docker.io
+    repository: grafana/agent-operator
+    tag: v0.25.1
+  kubeletService:
+    namespace: default
+    serviceName: kubelet
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  rbac:
+    create: true
+  resources: {}
+  serviceAccount:
+    create: true
+  tolerations: []
+imagePullSecrets: []
+ingress:
+  annotations: {}
+  enabled: false
+  hosts:
+  - loki.example.com
+  ingressClassName: ""
+  paths:
+    read:
+    - /api/prom/tail
+    - /loki/api/v1/tail
+    - /loki/api
+    - /api/prom/rules
+    - /loki/api/v1/rules
+    - /prometheus/api/v1/rules
+    - /prometheus/api/v1/alerts
+    singleBinary:
+    - /api/prom/push
+    - /loki/api/v1/push
+    - /api/prom/tail
+    - /loki/api/v1/tail
+    - /loki/api
+    - /api/prom/rules
+    - /loki/api/v1/rules
+    - /prometheus/api/v1/rules
+    - /prometheus/api/v1/alerts
+    write:
+    - /api/prom/push
+    - /loki/api/v1/push
+  tls: []
+kubectlImage:
+  pullPolicy: IfNotPresent
+  registry: docker.io
+  repository: bitnami/kubectl
+  tag: null
+loki:
+  analytics: {}
+  auth_enabled: true
+  commonConfig:
+    path_prefix: /var/loki
+    replication_factor: 1
+  compactor: {}
+  config: |
+    {{- if .Values.enterprise.enabled}}
+    {{- tpl .Values.enterprise.config . }}
+    {{- else }}
+    auth_enabled: {{ .Values.loki.auth_enabled }}
+    {{- end }}
+
+    {{- with .Values.loki.server }}
+    server:
+      {{- toYaml . | nindent 2}}
+    {{- end}}
+
+    memberlist:
+      join_members:
+        - {{ include "loki.memberlist" . }}
+        {{- with .Values.migrate.fromDistributed }}
+        {{- if .enabled }}
+        - {{ .memberlistService }}
+        {{- end }}
+        {{- end }}
+
+    {{- if .Values.loki.commonConfig}}
+    common:
+    {{- toYaml .Values.loki.commonConfig | nindent 2}}
+      storage:
+      {{- include "loki.commonStorageConfig" . | nindent 4}}
+    {{- end}}
+
+    {{- with .Values.loki.limits_config }}
+    limits_config:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.loki.memcached.chunk_cache }}
+    {{- if and .enabled .host }}
+    chunk_store_config:
+      chunk_cache_config:
+        memcached:
+          batch_size: {{ .batch_size }}
+          parallelism: {{ .parallelism }}
+        memcached_client:
+          host: {{ .host }}
+          service: {{ .service }}
+    {{- end }}
+    {{- end }}
+
+    {{- if .Values.loki.schemaConfig}}
+    schema_config:
+    {{- toYaml .Values.loki.schemaConfig | nindent 2}}
+    {{- else }}
+    schema_config:
+      configs:
+        - from: 2022-01-11
+          store: boltdb-shipper
+          object_store: {{ .Values.loki.storage.type }}
+          schema: v12
+          index:
+            prefix: loki_index_
+            period: 24h
+    {{- end }}
+
+    {{ include "loki.rulerConfig" . }}
+
+    {{- with .Values.loki.memcached.results_cache }}
+    query_range:
+      align_queries_with_step: true
+      {{- if and .enabled .host }}
+      cache_results: {{ .enabled }}
+      results_cache:
+        cache:
+          default_validity: {{ .default_validity }}
+          memcached_client:
+            host: {{ .host }}
+            service: {{ .service }}
+            timeout: {{ .timeout }}
+      {{- end }}
+    {{- end }}
+
+    {{- with .Values.loki.storage_config }}
+    storage_config:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.loki.query_scheduler }}
+    query_scheduler:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.loki.compactor }}
+    compactor:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.loki.analytics }}
+    analytics:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+
+    {{- with .Values.loki.querier }}
+    querier:
+      {{- tpl (. | toYaml) $ | nindent 4 }}
+    {{- end }}
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+  existingSecretForConfig: ""
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: grafana/loki
+    tag: null
+  limits_config:
+    enforce_metric_name: false
+    max_cache_freshness_per_query: 10m
+    reject_old_samples: true
+    reject_old_samples_max_age: 168h
+    split_queries_by_interval: 15m
+  memcached:
+    chunk_cache:
+      batch_size: 256
+      enabled: false
+      host: ""
+      parallelism: 10
+      service: memcached-client
+    results_cache:
+      default_validity: 12h
+      enabled: false
+      host: ""
+      service: memcached-client
+      timeout: 500ms
+  podAnnotations: {}
+  podSecurityContext:
+    fsGroup: 10001
+    runAsGroup: 10001
+    runAsNonRoot: true
+    runAsUser: 10001
+  querier: {}
+  query_scheduler: {}
+  readinessProbe:
+    httpGet:
+      path: /ready
+      port: http-metrics
+    initialDelaySeconds: 30
+    timeoutSeconds: 1
+  revisionHistoryLimit: 10
+  rulerConfig: {}
+  schemaConfig: {}
+  server:
+    grpc_listen_port: 9095
+    http_listen_port: 3100
+  storage:
+    azure:
+      accountKey: null
+      accountName: null
+      requestTimeout: null
+      useManagedIdentity: false
+      userAssignedId: null
+    bucketNames:
+      admin: admin
+      chunks: chunks
+      ruler: ruler
+    filesystem:
+      chunks_directory: /var/loki/chunks
+      rules_directory: /var/loki/rules
+    gcs:
+      chunkBufferSize: 0
+      enableHttp2: true
+      requestTimeout: 0s
+    s3:
+      accessKeyId: null
+      endpoint: null
+      http_config: {}
+      insecure: false
+      region: null
+      s3: null
+      s3ForcePathStyle: false
+      secretAccessKey: null
+    type: filesystem
+  storage_config:
+    hedging:
+      at: 250ms
+      max_per_second: 20
+      up_to: 3
+  structuredConfig: {}
+migrate:
+  fromDistributed:
+    enabled: false
+    memberlistService: ""
+minio:
+  DeploymentUpdate:
+    maxSurge: 100%
+    maxUnavailable: 0
+    type: RollingUpdate
+  StatefulSetUpdate:
+    updateStrategy: RollingUpdate
+  additionalAnnotations: []
+  additionalLabels: []
+  affinity: {}
+  bucketRoot: ""
+  buckets:
+  - name: chunks
+    policy: none
+    purge: false
+  - name: ruler
+    policy: none
+    purge: false
+  - name: admin
+    policy: none
+    purge: false
+  certsPath: /etc/minio/certs/
+  clusterDomain: cluster.local
+  configPathmc: /etc/minio/mc/
+  consoleIngress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - console.minio-example.local
+    labels: {}
+    path: /
+    tls: []
+  consoleService:
+    clusterIP: null
+    nodePort: 32001
+    port: "9001"
+    type: ClusterIP
+  customCommandJob:
+    affinity: {}
+    annotations: null
+    exitCommand: ""
+    nodeSelector: {}
+    podAnnotations: null
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsUser: 1000
+    tolerations: []
+  customCommands: null
+  drivesPerNode: 2
+  enabled: false
+  environment: null
+  etcd:
+    clientCert: ""
+    clientCertKey: ""
+    corednsPathPrefix: ""
+    endpoints: []
+    pathPrefix: ""
+  existingSecret: ""
+  extraArgs: []
+  fullnameOverride: ""
+  gateway:
+    replicas: 4
+    type: nas
+  global:
+    clusterDomain: cluster.local
+    dnsNamespace: kube-system
+    dnsService: kube-dns
+    image:
+      registry: null
+    priorityClassName: null
+  ignoreChartChecksums: false
+  image:
+    pullPolicy: IfNotPresent
+    repository: quay.io/minio/minio
+    tag: RELEASE.2022-08-13T21-54-44Z
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - minio-example.local
+    labels: {}
+    path: /
+    tls: []
+  makeBucketJob:
+    affinity: {}
+    annotations: null
+    exitCommand: ""
+    nodeSelector: {}
+    podAnnotations: null
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsUser: 1000
+    tolerations: []
+  makePolicyJob:
+    affinity: {}
+    annotations: null
+    exitCommand: ""
+    nodeSelector: {}
+    podAnnotations: null
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsUser: 1000
+    tolerations: []
+  makeUserJob:
+    affinity: {}
+    annotations: null
+    exitCommand: ""
+    nodeSelector: {}
+    podAnnotations: null
+    resources:
+      requests:
+        memory: 128Mi
+    securityContext:
+      enabled: false
+      fsGroup: 1000
+      runAsGroup: 1000
+      runAsUser: 1000
+    tolerations: []
+  mcImage:
+    pullPolicy: IfNotPresent
+    repository: quay.io/minio/mc
+    tag: RELEASE.2022-08-11T00-30-48Z
+  metrics:
+    serviceMonitor:
+      additionalLabels: {}
+      annotations: {}
+      enabled: false
+      public: true
+      relabelConfigs: {}
+  minioAPIPort: "9000"
+  minioConsolePort: "9001"
+  mode: distributed
+  mountPath: /export
+  nameOverride: ""
+  networkPolicy:
+    allowExternal: true
+    enabled: false
+  nodeSelector: {}
+  oidc:
+    claimName: policy
+    claimPrefix: ""
+    clientId: minio
+    clientSecret: ""
+    comment: ""
+    configUrl: https://identity-provider-url/.well-known/openid-configuration
+    enabled: false
+    redirectUri: https://console-endpoint-url/oauth_callback
+    scopes: openid,profile,email
+  persistence:
+    VolumeName: ""
+    accessMode: ReadWriteOnce
+    annotations: {}
+    enabled: true
+    existingClaim: ""
+    size: 5Gi
+    storageClass: ""
+    subPath: ""
+  podAnnotations: {}
+  podDisruptionBudget:
+    enabled: false
+    maxUnavailable: 1
+  podLabels: {}
+  policies: []
+  pools: 1
+  priorityClassName: ""
+  replicas: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  rootPassword: supersecret
+  rootUser: enterprise-logs
+  runtimeClassName: ""
+  securityContext:
+    enabled: true
+    fsGroup: 1000
+    fsGroupChangePolicy: OnRootMismatch
+    runAsGroup: 1000
+    runAsUser: 1000
+  service:
+    clusterIP: null
+    nodePort: 32000
+    port: "9000"
+    type: ClusterIP
+  serviceAccount:
+    create: true
+    name: minio-sa
+  tls:
+    certSecret: ""
+    enabled: false
+    privateKey: private.key
+    publicCrt: public.crt
+  tolerations: []
+  topologySpreadConstraints: []
+  trustedCertsSecret: ""
+  users:
+  - accessKey: console
+    policy: consoleAdmin
+    secretKey: console123
+monitoring:
+  dashboards:
+    annotations: {}
+    enabled: true
+    labels: {}
+    namespace: null
+  rules:
+    additionalGroups: []
+    alerting: true
+    annotations: {}
+    enabled: true
+    labels: {}
+    namespace: null
+  selfMonitoring:
+    enabled: true
+    grafanaAgent:
+      annotations: {}
+      enableConfigReadAPI: false
+      installOperator: true
+      labels: {}
+      namespace: null
+    logsInstance:
+      annotations: {}
+      clients: null
+      labels: {}
+      namespace: null
+    lokiCanary:
+      annotations: {}
+      enabled: true
+      extraArgs: []
+      extraEnv: []
+      extraEnvFrom: []
+      image:
+        pullPolicy: IfNotPresent
+        registry: docker.io
+        repository: grafana/loki-canary
+        tag: null
+      nodeSelector: {}
+      resources: {}
+      tolerations: []
+    podLogs:
+      annotations: {}
+      labels: {}
+      namespace: null
+      relabelings: []
+    tenant: self-monitoring
+  serviceMonitor:
+    annotations: {}
+    enabled: true
+    interval: null
+    labels: {}
+    metricsInstance:
+      annotations: {}
+      enabled: true
+      labels: {}
+      remoteWrite: null
+    namespace: null
+    namespaceSelector: {}
+    relabelings: []
+    scheme: http
+    scrapeTimeout: null
+    tlsConfig: null
+nameOverride: null
+networkPolicy:
+  alertmanager:
+    namespaceSelector: {}
+    podSelector: {}
+    port: 9093
+  discovery:
+    namespaceSelector: {}
+    podSelector: {}
+    port: null
+  enabled: false
+  externalStorage:
+    cidrs: []
+    ports: []
+  ingress:
+    namespaceSelector: {}
+    podSelector: {}
+  metrics:
+    cidrs: []
+    namespaceSelector: {}
+    podSelector: {}
+rbac:
+  pspEnabled: false
+  sccEnabled: false
+read:
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "loki.readSelectorLabels" . | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+  autoscaling:
+    enabled: false
+    maxReplicas: 3
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: null
+  extraArgs: []
+  extraEnv: []
+  extraEnvFrom: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    registry: null
+    repository: null
+    tag: null
+  nodeSelector: {}
+  persistence:
+    selector: null
+    size: 10Gi
+    storageClass: null
+  podAnnotations: {}
+  priorityClassName: null
+  replicas: 3
+  resources: {}
+  selectorLabels: {}
+  serviceLabels: {}
+  targetModule: read
+  terminationGracePeriodSeconds: 30
+  tolerations: []
+serviceAccount:
+  annotations: {}
+  automountServiceAccountToken: true
+  create: true
+  imagePullSecrets: []
+  labels: {}
+  name: null
+singleBinary:
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "loki.singleBinarySelectorLabels" . | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+  autoscaling:
+    enabled: false
+    maxReplicas: 3
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 60
+    targetMemoryUtilizationPercentage: null
+  extraArgs: []
+  extraEnv: []
+  extraEnvFrom: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    registry: null
+    repository: null
+    tag: null
+  nodeSelector: {}
+  persistence:
+    selector: null
+    size: 10Gi
+    storageClass: null
+  podAnnotations: {}
+  priorityClassName: null
+  replicas: 1
+  resources: {}
+  selectorLabels: {}
+  targetModule: all
+  terminationGracePeriodSeconds: 30
+  tolerations: []
+test:
+  annotations: {}
+  enabled: true
+  image:
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: grafana/loki-helm-test
+    tag: null
+  labels: {}
+  prometheusAddress: http://prometheus:9090
+  timeout: 1m
+tracing:
+  jaegerAgentHost: ""
+write:
+  affinity: |
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              {{- include "loki.writeSelectorLabels" . | nindent 10 }}
+          topologyKey: kubernetes.io/hostname
+  extraArgs: []
+  extraEnv: []
+  extraEnvFrom: []
+  extraVolumeMounts: []
+  extraVolumes: []
+  image:
+    registry: null
+    repository: null
+    tag: null
+  nodeSelector: {}
+  persistence:
+    selector: null
+    size: 10Gi
+    storageClass: null
+  podAnnotations: {}
+  priorityClassName: null
+  replicas: 3
+  resources: {}
+  selectorLabels: {}
+  serviceLabels: {}
+  targetModule: write
+  terminationGracePeriodSeconds: 300
+  tolerations: []

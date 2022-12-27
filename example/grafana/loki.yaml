@@ -1,0 +1,12 @@
+ingress:
+  annotations: {}
+  enabled: true
+  hosts:
+    - loki.dickens.top
+  ingressClassName: apisix
+
+loki:
+  commonConfig:
+    replication_factor: 1
+  storage:
+    type: "filesystem"
