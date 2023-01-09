@@ -6,7 +6,17 @@ ingress:
   ingressClassName: apisix
 
 loki:
+  auth_enabled: false
   commonConfig:
     replication_factor: 1
+  schemaConfig:
+    configs:
+      - from: 2023-01-01
+        store: boltdb
+        object_store: filesystem
+        schema: v11
+        index:
+          prefix: index_
+          period: 168h
   storage:
     type: "filesystem"
