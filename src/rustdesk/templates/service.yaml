@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "rustdesk.fullname" . }}
+  labels:
+    {{- include "rustdesk.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 21115
+      targetPort: 21115
+      protocol: TCP
+      name: tcp15
+    - port: 21116
+      targetPort: 21116
+      protocol: TCP
+      name: tcp16
+    - port: 21116
+      targetPort: 21116
+      protocol: UDP
+      name: udp16
+    - port: 21118
+      targetPort: 21118
+      protocol: TCP
+      name: tcp18
+    - port: 21117
+      targetPort: 21117
+      protocol: TCP
+      name: tcp17
+    - port: 21119
+      targetPort: 21119
+      protocol: TCP
+      name: tcp19
+  selector:
+    {{- include "rustdesk.selectorLabels" . | nindent 4 }}
