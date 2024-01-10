@@ -7,9 +7,9 @@ metadata:
 data:
   entrypoint.sh: |-
     # 1. 读取当前ip
-    export RNACOS_RAFT_NODE_ADDR=rnacos-$(echo $MY_POD_NAME | grep -o '[0-9]\+$').rnacos-headles.lxy-test.svc.cluster.local.:9848
+    export RNACOS_RAFT_NODE_ADDR=rnacos-$(echo $MY_POD_NAME | grep -o '[0-9]\+$').rnacos-headless.:9848
     export RNACOS_RAFT_NODE_ID=$(expr 1 + $(echo $MY_POD_NAME | grep -o '[0-9]\+$'))
-    export RNACOS_RAFT_JOIN_ADDR=rnacos-0.rnacos-headless.lxy-test.svc.cluster.local.:9848
+    export RNACOS_RAFT_JOIN_ADDR=rnacos-0.rnacos-headless.:9848
     # export RNACOS_RAFT_AUTO_INIT=true
     export RUST_LOG=debug
     echo $RNACOS_RAFT_NODE_ADDR
